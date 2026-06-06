@@ -261,14 +261,14 @@ export function KpiDashboardClient() {
             <ChannelChart data={data.canais} />
           </div>
 
-          {/* CIL Chart */}
-          {cilData && cilData.cil_aggregates.length > 0 && (
-            <CilChart data={cilData.cil_aggregates} onCilClick={handleCilClick} />
-          )}
-
           {/* Tipology Section */}
           {Object.keys(data.tipologias_por_canal).length > 0 && (
             <TipologySection tipologiasPorCanal={data.tipologias_por_canal} />
+          )}
+
+          {/* CIL Chart */}
+          {cilData && cilData.cil_aggregates.length > 0 && (
+            <CilChart data={cilData.cil_aggregates} onCilClick={handleCilClick} />
           )}
         </>
       ) : null}
