@@ -26,8 +26,14 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
   2. Dados parseados são armazenados em SQLite em `.data/cgi.db` na tabela `pedidos`, com dedup por `id_contacto + data`
   3. Histórico de uploads é registrado (data/hora, número de linhas importadas) no banco
   4. API routes `/api/upload` (POST) e `/api/data` (GET) respondem corretamente
-  5. Sistema de temas, layout, sidebar e personalização visual existente continua funcionando sem regressão
-**Plans:** TBD
+   5. Sistema de temas, layout, sidebar e personalização visual existente continua funcionando sem regressão
+**Plans:** 2 plans
+
+```
+Plans:
+- [ ] 01-01-PLAN.md — Upload CSV → Storage Pipeline (db.ts, csv.ts, services/pedidos.ts, POST /api/upload)
+- [ ] 01-02-PLAN.md — Data Retrieval APIs (GET /api/data, GET /api/upload/history)
+```
 
 ### Phase 2: Upload UI
 **Goal:** Usuários podem fazer upload de arquivos CSV através da interface do dashboard com feedback visual.
@@ -66,7 +72,7 @@ Phase 1 (Backend Foundation)
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1 - Backend Foundation | 0/0 | Not started | - |
+| 1 - Backend Foundation | 0/2 | Not started | - |
 | 2 - Upload UI | 0/0 | Not started | - |
 | 3 - KPI Dashboard | 0/0 | Not started | - |
 
