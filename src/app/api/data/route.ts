@@ -69,21 +69,22 @@ export async function GET(request: NextRequest) {
     const totalRow = db.prepare(`SELECT COUNT(*) as total FROM pedidos ${where}`).get(...params) as { total: number };
     const total = totalRow.total;
 
-    // Canais (CASE WHEN normalization — D-21)
+    // Canais (CASE WHEN normalization — D-21, excluding 'Outros')
     const canais = db
       .prepare(
-        `SELECT
-          CASE
-            WHEN "receção" IN ('Portal', 'Portal da ERSE', 'Portal Queixa', 'Formulário Site Público') THEN 'Portal'
-            WHEN "receção" IN ('Back-Office', 'Telefone Back-Office') THEN 'Back-Office'
-            WHEN "receção" = 'Email' THEN 'Email'
-            WHEN "receção" = 'Telefone Front' THEN 'Telefone Front'
-            ELSE 'Outros'
-          END as canal,
-          COUNT(*) as count
-        FROM pedidos
-        ${where}
-        GROUP BY canal
+        `SELECT canal, count FROM (
+          SELECT
+            CASE
+              WHEN "receção" IN ('Portal', 'Portal da ERSE', 'Portal Queixa', 'Formulário Site Público') THEN 'Portal'
+              WHEN "receção" IN ('Back-Office', 'Telefone Back-Office') THEN 'Back-Office'
+              WHEN "receção" = 'Email' THEN 'Email'
+              WHEN "receção" = 'Telefone Front' THEN 'Telefone Front'
+            END as canal,
+            COUNT(*) as count
+          FROM pedidos
+          ${where}
+          GROUP BY canal
+        ) WHERE canal IS NOT NULL
         ORDER BY count DESC`,
       )
       .all(...params) as { canal: string; count: number }[];
@@ -152,26 +153,27 @@ export async function GET(request: NextRequest) {
             WHEN "receção" IN ('Back-Office', 'Telefone Back-Office') THEN 'Back-Office'
             WHEN "receção" = 'Email' THEN 'Email'
             WHEN "receção" = 'Telefone Front' THEN 'Telefone Front'
-            ELSE 'Outros'
+            ELSE NULL -- Alterado para NULL para remover 'Outros'
           END as canal,
-          justificação,
+          "Nivel 3" as nivel_3_tipologia, -- Usar Nivel 3
           COUNT(*) as count
         FROM pedidos
-        ${where}
-        GROUP BY canal, justificação
+        ${where} AND "Nivel 3" IS NOT NULL AND "Nivel 3" != '' -- Filtrar Nivel 3 inválido
+        GROUP BY canal, nivel_3_tipologia
         ORDER BY canal, count DESC`,
       )
-      .all(...params) as { canal: string; justificação: string; count: number }[];
+      .all(...params) as { canal: string; nivel_3_tipologia: string; count: number }[];
 
     // Group by canal and take top 5
     const tipologias_por_canal: Record<string, Array<{ justificacao: string; count: number }>> = {};
     for (const row of tipologiasRaw) {
+      if (!row.canal) continue;
       if (!tipologias_por_canal[row.canal]) {
         tipologias_por_canal[row.canal] = [];
       }
       if (tipologias_por_canal[row.canal].length < 5) {
         tipologias_por_canal[row.canal].push({
-          justificacao: row.justificação,
+          justificacao: row.nivel_3_tipologia,
           count: row.count,
         });
       }

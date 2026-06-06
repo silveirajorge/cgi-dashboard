@@ -6,7 +6,7 @@ interface TipologySectionProps {
   tipologiasPorCanal: Record<string, Array<{ justificacao: string; count: number }>>;
 }
 
-const CHANNEL_ORDER = ["Back-Office", "Email", "Portal", "Telefone Front", "Outros"];
+const CHANNEL_ORDER = ["Back-Office", "Email", "Portal", "Telefone Front"];
 
 export function TipologySection({ tipologiasPorCanal }: TipologySectionProps) {
   const channels = CHANNEL_ORDER.filter((c) => tipologiasPorCanal[c]);

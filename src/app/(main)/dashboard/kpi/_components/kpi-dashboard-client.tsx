@@ -103,17 +103,73 @@ export function KpiDashboardClient() {
     }
   }, []);
 
-  // Initial load: use current month as default
   useEffect(() => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const lastDay = String(new Date(year, now.getMonth() + 1, 0).getDate()).padStart(2, "0");
-    const defaultFrom = `${year}-${month}-01`;
-    const defaultTo = `${year}-${month}-${lastDay}`;
-    setFrom(defaultFrom);
-    setTo(defaultTo);
-    void fetchData(defaultFrom, defaultTo);
+    if (initializedRef.current) return;
+
+    const initializeData = async () => {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const lastDay = String(new Date(year, now.getMonth() + 1, 0).getDate()).padStart(2, "0");
+      const defaultFrom = `${year}-${month}-01`;
+      const defaultTo = `${year}-${month}-${lastDay}`;
+
+      setFrom(defaultFrom);
+      setTo(defaultTo);
+      setSelectedMonth(`${year}-${month}`);
+
+      try {
+        const [dataRes, cilRes] = await Promise.all([
+          fetch(`/api/data?from=${defaultFrom}&to=${defaultTo}`),
+          fetch(`/api/cil?from=${defaultFrom}&to=${defaultTo}`),
+        ]);
+
+        if (!dataRes.ok || !cilRes.ok) throw new Error("Erro ao carregar dados iniciais");
+
+        const dataJson: KpiDataResponse = await dataRes.json();
+        const cilJson: CilResponse = await cilRes.json();
+
+        if (dataJson.meses_disponiveis.length > 0) {
+          setData(dataJson);
+          setCilData(cilJson);
+          const mes = getMonthFromPeriod(defaultFrom, defaultTo);
+          const carteiraRes = await fetch(`/api/carteira?mes=${mes}`);
+          if (carteiraRes.ok) {
+            const carteiraJson = await carteiraRes.json();
+            setCarteira(carteiraJson.total_clientes);
+          }
+          initializedRef.current = true;
+        } else {
+          // No data for current month, try last available month
+          const allMonthsRes = await fetch("/api/data"); // Fetch all months without period filter
+          if (allMonthsRes.ok) {
+            const allMonthsJson: KpiDataResponse = await allMonthsRes.json();
+            if (allMonthsJson.meses_disponiveis.length > 0) {
+              const lastMes =
+                allMonthsJson.meses_disponiveis[allMonthsJson.meses_disponiveis.length - 1].mes_competencia;
+              const [, m] = lastMes.split("-");
+              const newFrom = `${lastMes}-01`;
+              const lastD = new Date(Number(lastMes.substring(0, 4)), Number(m), 0).getDate();
+              const newTo = `${lastMes}-${String(lastD).padStart(2, "0")}`;
+
+              setSelectedMonth(lastMes);
+              setFrom(newFrom);
+              setTo(newTo);
+              void fetchData(newFrom, newTo);
+              initializedRef.current = true;
+            } else {
+              setError("Nenhum dado disponível na base de dados.");
+            }
+          }
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Erro desconhecido ao inicializar");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    void initializeData();
   }, [fetchData]);
 
   function handlePeriodChangeFromMonth(mes: string) {
