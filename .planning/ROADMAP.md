@@ -44,7 +44,12 @@ Plans:
   1. Usuário pode clicar em um botão de upload para selecionar e enviar um arquivo CSV
   2. Usuário pode arrastar e soltar (drag & drop) um arquivo CSV na área de upload
   3. Sistema exibe toast notification (sonner) com resultado da importação — sucesso com número de linhas, ou mensagem de erro
-**Plans:** TBD
+**Plans:** 1 plan
+
+```
+Plans:
+- [ ] 02-01-PLAN.md — Upload UI: page, drag & drop component, sidebar item
+```
 **UI hint:** yes
 
 ### Phase 3: KPI Dashboard
@@ -73,7 +78,7 @@ Phase 1 (Backend Foundation)
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1 - Backend Foundation | 2/2 | Complete   | 2026-06-06 |
-| 2 - Upload UI | 0/0 | Not started | - |
+| 2 - Upload UI | 0/1 | Not started | - |
 | 3 - KPI Dashboard | 0/0 | Not started | - |
 
 ---
