@@ -3,7 +3,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { parseCsvContent, validateRequiredColumns } from "@/lib/csv";
 import { importRows } from "@/lib/services/pedidos";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const REQUIRED_COLUMNS = ["id_contacto"];
 
 export async function POST(request: NextRequest) {
