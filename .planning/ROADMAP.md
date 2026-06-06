@@ -12,7 +12,7 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
 
 - [x] **Phase 1: Backend Foundation** — Infraestrutura de backend: SQLite, parser CSV, API routes, arquitetura em camadas (completed 2026-06-06)
 - [x] **Phase 2: Upload UI** — Interface de upload: formulário, drag & drop, validação, feedback visual (completed 2026-06-06)
-- [ ] **Phase 3: KPI Dashboard** — Dashboard de KPIs: cards automáticos, gráficos, atualização pós-upload
+- [x] **Phase 3: KPI Dashboard** — Dashboard de KPIs: cards automáticos, gráficos, atualização pós-upload (completed 2026-06-06)
 
 ## Phase Details
 
@@ -62,12 +62,12 @@ Plans:
   2. Gráfico (Recharts) é gerado automaticamente a partir dos dados numéricos do SQLite
   3. KPIs e gráficos refletem todos os dados cumulativos (incluindo dedup)
   4. KPIs são atualizados automaticamente após cada novo upload — sem refresh manual
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 ```
 Plans:
 - [x] 03-01-PLAN.md — Backend infrastructure: sidebar, DB migration, enhanced APIs (data, CIL, carteira)
-- [ ] 03-02-PLAN.md — KPI frontend: dashboard page, cards, charts, modals, period filter
+- [x] 03-02-PLAN.md — KPI frontend: dashboard page, cards, charts, modals, period filter
 ```
 
 ## Dependencies
@@ -84,7 +84,7 @@ Phase 1 (Backend Foundation)
 |-------|----------------|--------|-----------|
 | 1 - Backend Foundation | 2/2 | Complete   | 2026-06-06 |
 | 2 - Upload UI | 1/1 | Complete   | 2026-06-06 |
-| 3 - KPI Dashboard | 1/2 | In Progress|  |
+| 3 - KPI Dashboard | 2/2 | Complete   | 2026-06-06 |
 
 ---
 
