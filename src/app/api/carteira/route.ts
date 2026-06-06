@@ -7,11 +7,22 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const mes = searchParams.get("mes");
 
+    const db = getDb();
+
     if (!mes) {
       return NextResponse.json({ error: "Parâmetro 'mes' é obrigatório (YYYY-MM)" }, { status: 400 });
     }
 
-    const db = getDb();
+    if (mes === "latest") {
+      const row = db
+        .prepare("SELECT mes_competencia, total_clientes FROM carteira_clientes ORDER BY mes_competencia DESC LIMIT 1")
+        .get() as { mes_competencia: string; total_clientes: number } | undefined;
+      return NextResponse.json({
+        total_clientes: row?.total_clientes ?? null,
+        mes_competencia: row?.mes_competencia ?? null,
+      });
+    }
+
     const row = db.prepare("SELECT total_clientes FROM carteira_clientes WHERE mes_competencia = ?").get(mes) as
       | { total_clientes: number }
       | undefined;

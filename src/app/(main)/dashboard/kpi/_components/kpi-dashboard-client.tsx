@@ -69,32 +69,12 @@ export function KpiDashboardClient() {
       setData(dataJson);
       setCilData(cilJson);
 
-      // Fetch carteira for the end month of the range
+      // Fetch carteira
       const mes = getMonthFromPeriod(fromVal, toVal);
       const carteiraRes = await fetch(`/api/carteira?mes=${mes}`);
       if (carteiraRes.ok) {
         const carteiraJson = await carteiraRes.json();
         setCarteira(carteiraJson.total_clientes);
-      }
-
-      // Auto-select last available month on first load
-      if (!initializedRef.current && dataJson.meses_disponiveis.length > 0) {
-        initializedRef.current = true;
-        const lastMes = dataJson.meses_disponiveis[dataJson.meses_disponiveis.length - 1].mes_competencia;
-        if (lastMes !== fromVal.substring(0, 7)) {
-          setSelectedMonth(lastMes);
-          const [, month] = lastMes.split("-");
-          const newFrom = `${lastMes}-01`;
-          const lastDay = new Date(Number(lastMes.substring(0, 4)), Number(month), 0).getDate();
-          const newTo = `${lastMes}-${String(lastDay).padStart(2, "0")}`;
-          setFrom(newFrom);
-          setTo(newTo);
-          const res2 = await fetch(`/api/data?from=${newFrom}&to=${newTo}`);
-          if (res2.ok) {
-            const json2: KpiDataResponse = await res2.json();
-            setData(json2);
-          }
-        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro desconhecido");
@@ -105,60 +85,61 @@ export function KpiDashboardClient() {
 
   useEffect(() => {
     if (initializedRef.current) return;
+    initializedRef.current = true;
 
     const initializeData = async () => {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, "0");
-      const lastDay = String(new Date(year, now.getMonth() + 1, 0).getDate()).padStart(2, "0");
-      const defaultFrom = `${year}-${month}-01`;
-      const defaultTo = `${year}-${month}-${lastDay}`;
-
-      setFrom(defaultFrom);
-      setTo(defaultTo);
-      setSelectedMonth(`${year}-${month}`);
-
       try {
+        // First, get the list of available months
+        const allRes = await fetch("/api/data");
+        if (!allRes.ok) throw new Error("Erro ao carregar meses disponíveis");
+
+        const allJson: KpiDataResponse = await allRes.json();
+
+        if (allJson.meses_disponiveis.length === 0) {
+          setError("Nenhum dado disponível na base de dados.");
+          setLoading(false);
+          return;
+        }
+
+        // Load the most recent month with data
+        const lastMes = allJson.meses_disponiveis[allJson.meses_disponiveis.length - 1].mes_competencia;
+        const [, m] = lastMes.split("-");
+        const newFrom = `${lastMes}-01`;
+        const lastD = new Date(Number(lastMes.substring(0, 4)), Number(m), 0).getDate();
+        const newTo = `${lastMes}-${String(lastD).padStart(2, "0")}`;
+
+        setSelectedMonth(lastMes);
+        setFrom(newFrom);
+        setTo(newTo);
+
+        // Fetch data for the last available month
         const [dataRes, cilRes] = await Promise.all([
-          fetch(`/api/data?from=${defaultFrom}&to=${defaultTo}`),
-          fetch(`/api/cil?from=${defaultFrom}&to=${defaultTo}`),
+          fetch(`/api/data?from=${newFrom}&to=${newTo}`),
+          fetch(`/api/cil?from=${newFrom}&to=${newTo}`),
         ]);
 
-        if (!dataRes.ok || !cilRes.ok) throw new Error("Erro ao carregar dados iniciais");
+        if (!dataRes.ok || !cilRes.ok) throw new Error("Erro ao carregar dados");
 
         const dataJson: KpiDataResponse = await dataRes.json();
         const cilJson: CilResponse = await cilRes.json();
 
-        if (dataJson.meses_disponiveis.length > 0) {
-          setData(dataJson);
-          setCilData(cilJson);
-          const mes = getMonthFromPeriod(defaultFrom, defaultTo);
-          const carteiraRes = await fetch(`/api/carteira?mes=${mes}`);
-          if (carteiraRes.ok) {
-            const carteiraJson = await carteiraRes.json();
-            setCarteira(carteiraJson.total_clientes);
-          }
-          initializedRef.current = true;
-        } else {
-          // No data for current month, try last available month
-          const allMonthsRes = await fetch("/api/data"); // Fetch all months without period filter
-          if (allMonthsRes.ok) {
-            const allMonthsJson: KpiDataResponse = await allMonthsRes.json();
-            if (allMonthsJson.meses_disponiveis.length > 0) {
-              const lastMes =
-                allMonthsJson.meses_disponiveis[allMonthsJson.meses_disponiveis.length - 1].mes_competencia;
-              const [, m] = lastMes.split("-");
-              const newFrom = `${lastMes}-01`;
-              const lastD = new Date(Number(lastMes.substring(0, 4)), Number(m), 0).getDate();
-              const newTo = `${lastMes}-${String(lastD).padStart(2, "0")}`;
+        setData(dataJson);
+        setCilData(cilJson);
 
-              setSelectedMonth(lastMes);
-              setFrom(newFrom);
-              setTo(newTo);
-              void fetchData(newFrom, newTo);
-              initializedRef.current = true;
-            } else {
-              setError("Nenhum dado disponível na base de dados.");
+        // Fetch carteira — try the displayed month first, fall back to last record
+        const carteiraRes = await fetch(`/api/carteira?mes=${lastMes}`);
+        if (carteiraRes.ok) {
+          const carteiraJson = await carteiraRes.json();
+          if (carteiraJson.total_clientes !== null) {
+            setCarteira(carteiraJson.total_clientes);
+          } else {
+            // Try to get the last available carteira record
+            const latestRes = await fetch("/api/carteira?mes=latest");
+            if (latestRes.ok) {
+              const latestJson = await latestRes.json();
+              if (latestJson.total_clientes !== null) {
+                setCarteira(latestJson.total_clientes);
+              }
             }
           }
         }
@@ -170,7 +151,7 @@ export function KpiDashboardClient() {
     };
 
     void initializeData();
-  }, [fetchData]);
+  }, []);
 
   function handlePeriodChangeFromMonth(mes: string) {
     const [, month] = mes.split("-");

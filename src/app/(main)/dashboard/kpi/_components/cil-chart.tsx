@@ -30,7 +30,7 @@ export function CilChart({ data, onCilClick }: CilChartProps) {
     <div className="rounded-xl border bg-card p-4">
       <h3 className="mb-4 font-semibold text-sm">Chamados por CIL (Top 20)</h3>
       <ChartContainer config={chartConfig} className="h-80 w-full">
-        <BarChart data={data} layout="vertical" margin={{ top: 5, right: 10, left: 20, bottom: 0 }}>
+        <BarChart data={data} layout="vertical" margin={{ top: 10, right: 10, left: 20, bottom: 0 }}>
           <CartesianGrid horizontal={false} />
           <XAxis type="number" tickLine={false} axisLine={false} tickMargin={8} fontSize={12} />
           <YAxis
@@ -41,6 +41,7 @@ export function CilChart({ data, onCilClick }: CilChartProps) {
             tickMargin={8}
             fontSize={12}
             width={90}
+            interval={0}
           />
           <ChartTooltip content={<ChartTooltipContent />} cursor={{ fill: "var(--muted)" }} />
           <Bar
