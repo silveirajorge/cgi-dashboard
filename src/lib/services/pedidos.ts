@@ -44,7 +44,7 @@ export function importRows(parsed: ParseResult, filename: string): UploadStats {
   const insertAll = database.transaction(() => {
     for (const row of parsed.rows) {
       const values = parsed.headers.map((h) => row[h] ?? "");
-      values.push(extractMesCompetencia(row["dt_registo"] ?? ""));
+      values.push(extractMesCompetencia(row.dt_registo ?? ""));
       const result = insertStmt.run(...values);
       if (result.changes > 0) {
         imported++;
