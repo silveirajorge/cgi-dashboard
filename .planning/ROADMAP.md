@@ -10,7 +10,7 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
 
 ## Phases
 
-- [ ] **Phase 1: Backend Foundation** — Infraestrutura de backend: SQLite, parser CSV, API routes, arquitetura em camadas
+- [x] **Phase 1: Backend Foundation** — Infraestrutura de backend: SQLite, parser CSV, API routes, arquitetura em camadas (completed 2026-06-06)
 - [ ] **Phase 2: Upload UI** — Interface de upload: formulário, drag & drop, validação, feedback visual
 - [ ] **Phase 3: KPI Dashboard** — Dashboard de KPIs: cards automáticos, gráficos, atualização pós-upload
 
@@ -27,12 +27,12 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
   3. Histórico de uploads é registrado (data/hora, número de linhas importadas) no banco
   4. API routes `/api/upload` (POST) e `/api/data` (GET) respondem corretamente
    5. Sistema de temas, layout, sidebar e personalização visual existente continua funcionando sem regressão
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 ```
 Plans:
-- [ ] 01-01-PLAN.md — Upload CSV → Storage Pipeline (db.ts, csv.ts, services/pedidos.ts, POST /api/upload)
-- [ ] 01-02-PLAN.md — Data Retrieval APIs (GET /api/data, GET /api/upload/history)
+- [x] 01-01-PLAN.md — Upload CSV → Storage Pipeline (db.ts, csv.ts, services/pedidos.ts, POST /api/upload)
+- [x] 01-02-PLAN.md — Data Retrieval APIs (GET /api/data, GET /api/upload/history)
 ```
 
 ### Phase 2: Upload UI
@@ -72,7 +72,7 @@ Phase 1 (Backend Foundation)
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1 - Backend Foundation | 0/2 | Not started | - |
+| 1 - Backend Foundation | 2/2 | Complete   | 2026-06-06 |
 | 2 - Upload UI | 0/0 | Not started | - |
 | 3 - KPI Dashboard | 0/0 | Not started | - |
 
