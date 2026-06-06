@@ -24,6 +24,21 @@ function runMigrations(database: Database.Database): void {
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
+
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS carteira_clientes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      mes_competencia TEXT NOT NULL UNIQUE,
+      total_clientes INTEGER NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  // Índice em CIL para performance de queries CIL
+  database.exec(`
+    CREATE INDEX IF NOT EXISTS idx_pedidos_cil ON pedidos(cil)
+  `);
 }
 
 export function createPedidosTable(columns: string[]): void {

@@ -1,5 +1,6 @@
 import {
   Banknote,
+  BarChart3,
   Calendar,
   ChartBar,
   Fingerprint,
@@ -51,11 +52,6 @@ export const sidebarItems: NavGroup[] = [
     label: "Dashboards",
     items: [
       {
-        title: "Upload CSV",
-        url: "/dashboard/upload",
-        icon: Upload,
-      },
-      {
         title: "Default",
         url: "/dashboard/default",
         icon: LayoutDashboard,
@@ -100,6 +96,22 @@ export const sidebarItems: NavGroup[] = [
   },
   {
     id: 2,
+    label: "Pedidos e Tendências",
+    items: [
+      {
+        title: "Dashboard",
+        url: "/dashboard/kpi",
+        icon: BarChart3,
+      },
+      {
+        title: "Upload CSV",
+        url: "/dashboard/upload",
+        icon: Upload,
+      },
+    ],
+  },
+  {
+    id: 3,
     label: "Pages",
     items: [
       {
@@ -155,7 +167,7 @@ export const sidebarItems: NavGroup[] = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     label: "Legacy",
     items: [
       {
@@ -171,7 +183,7 @@ export const sidebarItems: NavGroup[] = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     label: "Misc",
     items: [
       {
