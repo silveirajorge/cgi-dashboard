@@ -4,7 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Loader2 } from "lucide-react";
 
+import { ChannelChart } from "./channel-chart";
+import { DailyChart } from "./daily-chart";
+import { KpiCards } from "./kpi-cards";
 import { PeriodFilter } from "./period-filter";
+import { TipologySection } from "./tipology-section";
 
 interface KpiDataResponse {
   total: number;
@@ -18,8 +22,18 @@ interface KpiDataResponse {
   tipologias_por_canal: Record<string, Array<{ justificacao: string; count: number }>>;
 }
 
+interface CilResponse {
+  cil_aggregates: Array<{ cil: string; count: number }>;
+}
+
+function getMonthFromPeriod(_from: string, to: string): string {
+  return to.substring(0, 7);
+}
+
 export function KpiDashboardClient() {
   const [data, setData] = useState<KpiDataResponse | null>(null);
+  const [_cilData, setCilData] = useState<CilResponse | null>(null);
+  const [carteira, setCarteira] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,16 +48,32 @@ export function KpiDashboardClient() {
     setError(null);
 
     try {
-      const res = await fetch(`/api/data?from=${fromVal}&to=${toVal}`);
-      if (!res.ok) throw new Error("Erro ao carregar dados");
+      const [dataRes, cilRes] = await Promise.all([
+        fetch(`/api/data?from=${fromVal}&to=${toVal}`),
+        fetch(`/api/cil?from=${fromVal}&to=${toVal}`),
+      ]);
 
-      const json: KpiDataResponse = await res.json();
-      setData(json);
+      if (!dataRes.ok) throw new Error("Erro ao carregar dados");
+      if (!cilRes.ok) throw new Error("Erro ao carregar CILs");
+
+      const dataJson: KpiDataResponse = await dataRes.json();
+      const cilJson: CilResponse = await cilRes.json();
+
+      setData(dataJson);
+      setCilData(cilJson);
+
+      // Fetch carteira for the end month of the range
+      const mes = getMonthFromPeriod(fromVal, toVal);
+      const carteiraRes = await fetch(`/api/carteira?mes=${mes}`);
+      if (carteiraRes.ok) {
+        const carteiraJson = await carteiraRes.json();
+        setCarteira(carteiraJson.total_clientes);
+      }
 
       // Auto-select last available month on first load
-      if (!initializedRef.current && json.meses_disponiveis.length > 0) {
+      if (!initializedRef.current && dataJson.meses_disponiveis.length > 0) {
         initializedRef.current = true;
-        const lastMes = json.meses_disponiveis[json.meses_disponiveis.length - 1].mes_competencia;
+        const lastMes = dataJson.meses_disponiveis[dataJson.meses_disponiveis.length - 1].mes_competencia;
         if (lastMes !== fromVal.substring(0, 7)) {
           setSelectedMonth(lastMes);
           const [, month] = lastMes.split("-");
@@ -52,7 +82,6 @@ export function KpiDashboardClient() {
           const newTo = `${lastMes}-${String(lastDay).padStart(2, "0")}`;
           setFrom(newFrom);
           setTo(newTo);
-          // Re-fetch with corrected dates
           const res2 = await fetch(`/api/data?from=${newFrom}&to=${newTo}`);
           if (res2.ok) {
             const json2: KpiDataResponse = await res2.json();
@@ -98,6 +127,10 @@ export function KpiDashboardClient() {
     void fetchData(fromVal, toVal);
   }
 
+  function handleCarteiraClick() {
+    /* Will be wired in Task 3 */
+  }
+
   if (error) {
     return (
       <div className="flex items-center justify-center rounded-lg border border-destructive/50 bg-destructive/5 p-8">
@@ -125,13 +158,31 @@ export function KpiDashboardClient() {
           <Loader2 className="size-8 animate-spin text-muted-foreground" />
           <span className="ml-2 text-muted-foreground">Carregando dados...</span>
         </div>
-      ) : (
-        <div className="flex items-center justify-center py-16">
-          <p className="text-muted-foreground">
-            {data ? `${data.total} pedidos no período` : "Nenhum dado disponível"}
-          </p>
-        </div>
-      )}
+      ) : data ? (
+        <>
+          {/* KPI cards */}
+          <KpiCards
+            total={data.total}
+            carteira={carteira}
+            crescimento={data.crescimento}
+            avg_daily={data.avg_daily}
+            max_day={data.max_day}
+            workdays={data.workdays}
+            onCarteiraClick={handleCarteiraClick}
+          />
+
+          {/* Charts grid */}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <DailyChart data={data.daily} />
+            <ChannelChart data={data.canais} />
+          </div>
+
+          {/* Tipology Section */}
+          {Object.keys(data.tipologias_por_canal).length > 0 && (
+            <TipologySection tipologiasPorCanal={data.tipologias_por_canal} />
+          )}
+        </>
+      ) : null}
     </div>
   );
 }
