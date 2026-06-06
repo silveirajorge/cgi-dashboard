@@ -8,7 +8,7 @@
 
 Página `/dashboard/kpi` com dashboard completo de KPIs gerados automaticamente a partir dos dados do SQLite: cards de métricas, gráficos Recharts, seção de canais e tipologias, seção de CIL com modal de detalhes, filtro de período (dropdown de mês + date range picker), e modal para Carteira de Clientes editável manualmente.
 
-Inclui reestruturação da sidebar: novo grupo "Pedidos e Tendências" com itens Dashboard (`/dashboard/kpi`) e Importar CSV (`/dashboard/upload`), movendo o item atual "Upload CSV" do grupo Dashboards para o novo grupo.
+Inclui reestruturação da sidebar: novo grupo "Pedidos e Tendências" com itens Dashboard (`/dashboard/kpi`) e Upload CSV (`/dashboard/upload`), movendo o item atual "Upload CSV" do grupo Dashboards para o novo grupo.
 
 </domain>
 
@@ -19,7 +19,7 @@ Inclui reestruturação da sidebar: novo grupo "Pedidos e Tendências" com itens
 - **D-01:** Criar novo grupo na sidebar chamado "Pedidos e Tendências" entre os grupos existentes (ex: após Dashboards)
 - **D-02:** O grupo terá dois itens:
   - "Dashboard" → URL `/dashboard/kpi`, ícone `BarChart3` (lucide-react)
-  - "Importar CSV" → URL `/dashboard/upload`, ícone `Upload` (lucide-react)
+  - "Upload CSV" → URL `/dashboard/upload`, ícone `Upload` (lucide-react)
 - **D-03:** Remover o item "Upload CSV" do grupo "Dashboards" (src/navigation/sidebar/sidebar-items.ts) — ele foi movido para o novo grupo
 
 ### Página /dashboard/kpi
