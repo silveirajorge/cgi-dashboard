@@ -62,8 +62,13 @@ Plans:
   2. Gráfico (Recharts) é gerado automaticamente a partir dos dados numéricos do SQLite
   3. KPIs e gráficos refletem todos os dados cumulativos (incluindo dedup)
   4. KPIs são atualizados automaticamente após cada novo upload — sem refresh manual
-**Plans:** TBD
-**UI hint:** yes
+**Plans:** 2/2 plans created
+
+```
+Plans:
+- [ ] 03-01-PLAN.md — Backend infrastructure: sidebar, DB migration, enhanced APIs (data, CIL, carteira)
+- [ ] 03-02-PLAN.md — KPI frontend: dashboard page, cards, charts, modals, period filter
+```
 
 ## Dependencies
 
@@ -79,7 +84,7 @@ Phase 1 (Backend Foundation)
 |-------|----------------|--------|-----------|
 | 1 - Backend Foundation | 2/2 | Complete   | 2026-06-06 |
 | 2 - Upload UI | 1/1 | Complete   | 2026-06-06 |
-| 3 - KPI Dashboard | 0/0 | Not started | - |
+| 3 - KPI Dashboard | 0/2 | Planning | - |
 
 ---
 
