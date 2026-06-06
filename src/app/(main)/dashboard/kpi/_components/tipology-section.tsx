@@ -29,7 +29,7 @@ export function TipologySection({ tipologiasPorCanal }: TipologySectionProps) {
                   <ol className="space-y-1">
                     {tipologias.map((t, i) => (
                       <li key={t.justificacao} className="flex items-start gap-1 text-xs">
-                        <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted text-[10px] font-medium text-muted-foreground">
+                        <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-[10px] text-muted-foreground">
                           {i + 1}
                         </span>
                         <span className="text-muted-foreground">{t.justificacao}</span>

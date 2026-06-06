@@ -140,8 +140,8 @@ export function CilModal({ cil, from, to, onClose }: CilModalProps) {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  records.map((record, index) => (
-                    <TableRow key={index}>
+                  records.map((record) => (
+                    <TableRow key={`${record.id_contacto ?? ""}-${record.dt_registo ?? ""}`}>
                       {FIXED_COLUMNS.map((col) => (
                         <TableCell key={col}>{record[col] ?? ""}</TableCell>
                       ))}

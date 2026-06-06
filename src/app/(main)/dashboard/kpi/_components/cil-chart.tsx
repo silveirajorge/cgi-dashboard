@@ -49,7 +49,8 @@ export function CilChart({ data, onCilClick }: CilChartProps) {
             radius={[0, 4, 4, 0]}
             cursor="pointer"
             onClick={(entry) => {
-              if (entry?.cil) onCilClick(entry.cil);
+              const data = entry as { payload: { cil: string } };
+              if (data?.payload?.cil) onCilClick(data.payload.cil);
             }}
           />
         </BarChart>
