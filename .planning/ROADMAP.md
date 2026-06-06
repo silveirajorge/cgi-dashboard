@@ -11,7 +11,7 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
 ## Phases
 
 - [x] **Phase 1: Backend Foundation** — Infraestrutura de backend: SQLite, parser CSV, API routes, arquitetura em camadas (completed 2026-06-06)
-- [ ] **Phase 2: Upload UI** — Interface de upload: formulário, drag & drop, validação, feedback visual
+- [x] **Phase 2: Upload UI** — Interface de upload: formulário, drag & drop, validação, feedback visual (completed 2026-06-06)
 - [ ] **Phase 3: KPI Dashboard** — Dashboard de KPIs: cards automáticos, gráficos, atualização pós-upload
 
 ## Phase Details
@@ -44,11 +44,11 @@ Plans:
   1. Usuário pode clicar em um botão de upload para selecionar e enviar um arquivo CSV
   2. Usuário pode arrastar e soltar (drag & drop) um arquivo CSV na área de upload
   3. Sistema exibe toast notification (sonner) com resultado da importação — sucesso com número de linhas, ou mensagem de erro
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 ```
 Plans:
-- [ ] 02-01-PLAN.md — Upload UI: page, drag & drop component, sidebar item
+- [x] 02-01-PLAN.md — Upload UI: page, drag & drop component, sidebar item
 ```
 **UI hint:** yes
 
@@ -78,7 +78,7 @@ Phase 1 (Backend Foundation)
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1 - Backend Foundation | 2/2 | Complete   | 2026-06-06 |
-| 2 - Upload UI | 0/1 | Not started | - |
+| 2 - Upload UI | 1/1 | Complete   | 2026-06-06 |
 | 3 - KPI Dashboard | 0/0 | Not started | - |
 
 ---
