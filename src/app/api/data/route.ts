@@ -145,6 +145,8 @@ export async function GET(request: NextRequest) {
     const max_day = maxDayRow ? { date: maxDayRow.date, count: maxDayRow.count } : null;
 
     // Tipologias por canal (D-22)
+    const tipConditions: string[] = [...conditions, "nivel_3 IS NOT NULL AND nivel_3 != ''"];
+    const tipWhere = `WHERE ${tipConditions.join(" AND ")}`;
     const tipologiasRaw = db
       .prepare(
         `SELECT
@@ -153,12 +155,12 @@ export async function GET(request: NextRequest) {
             WHEN "receção" IN ('Back-Office', 'Telefone Back-Office') THEN 'Back-Office'
             WHEN "receção" = 'Email' THEN 'Email'
             WHEN "receção" = 'Telefone Front' THEN 'Telefone Front'
-            ELSE NULL -- Alterado para NULL para remover 'Outros'
+            ELSE NULL
           END as canal,
-          "Nivel 3" as nivel_3_tipologia, -- Usar Nivel 3
+          nivel_3 as nivel_3_tipologia,
           COUNT(*) as count
         FROM pedidos
-        ${where} AND "Nivel 3" IS NOT NULL AND "Nivel 3" != '' -- Filtrar Nivel 3 inválido
+        ${tipWhere}
         GROUP BY canal, nivel_3_tipologia
         ORDER BY canal, count DESC`,
       )

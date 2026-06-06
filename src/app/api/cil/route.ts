@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ cil_aggregates: [] });
     }
 
-    const conditions: string[] = ["cil IS NOT NULL AND cil != '' AND cil != '—'"];
+    const conditions: string[] = ["cil GLOB '[0-9]*'"];
     const params: string[] = [];
     if (from && to) {
       conditions.push("dt_registo >= ? AND dt_registo <= ?");
