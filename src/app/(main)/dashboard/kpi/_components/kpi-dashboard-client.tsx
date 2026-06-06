@@ -4,7 +4,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Loader2 } from "lucide-react";
 
+import { CarteiraModal } from "./carteira-modal";
 import { ChannelChart } from "./channel-chart";
+import { CilChart } from "./cil-chart";
+import { CilModal } from "./cil-modal";
 import { DailyChart } from "./daily-chart";
 import { KpiCards } from "./kpi-cards";
 import { PeriodFilter } from "./period-filter";
@@ -32,7 +35,7 @@ function getMonthFromPeriod(_from: string, to: string): string {
 
 export function KpiDashboardClient() {
   const [data, setData] = useState<KpiDataResponse | null>(null);
-  const [_cilData, setCilData] = useState<CilResponse | null>(null);
+  const [cilData, setCilData] = useState<CilResponse | null>(null);
   const [carteira, setCarteira] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,6 +43,10 @@ export function KpiDashboardClient() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
+
+  const [selectedCil, setSelectedCil] = useState<string | null>(null);
+  const [carteiraModalOpen, setCarteiraModalOpen] = useState(false);
+  const [carteiraMes, setCarteiraMes] = useState<string | null>(null);
 
   const initializedRef = useRef(false);
 
@@ -127,8 +134,29 @@ export function KpiDashboardClient() {
     void fetchData(fromVal, toVal);
   }
 
+  function handleCilClick(cil: string) {
+    setSelectedCil(cil);
+  }
+
+  function handleCilClose() {
+    setSelectedCil(null);
+  }
+
   function handleCarteiraClick() {
-    /* Will be wired in Task 3 */
+    const mes = getMonthFromPeriod(from, to);
+    setCarteiraMes(mes);
+    setCarteiraModalOpen(true);
+  }
+
+  function handleCarteiraClose() {
+    setCarteiraModalOpen(false);
+    setCarteiraMes(null);
+  }
+
+  function handleCarteiraSave(value: number) {
+    setCarteira(value);
+    setCarteiraModalOpen(false);
+    setCarteiraMes(null);
   }
 
   if (error) {
@@ -177,12 +205,31 @@ export function KpiDashboardClient() {
             <ChannelChart data={data.canais} />
           </div>
 
+          {/* CIL Chart */}
+          {cilData && cilData.cil_aggregates.length > 0 && (
+            <CilChart data={cilData.cil_aggregates} onCilClick={handleCilClick} />
+          )}
+
           {/* Tipology Section */}
           {Object.keys(data.tipologias_por_canal).length > 0 && (
             <TipologySection tipologiasPorCanal={data.tipologias_por_canal} />
           )}
         </>
       ) : null}
+
+      {/* CIL Modal */}
+      {selectedCil && <CilModal cil={selectedCil} from={from} to={to} onClose={handleCilClose} />}
+
+      {/* Carteira Modal */}
+      {carteiraModalOpen && (
+        <CarteiraModal
+          open={carteiraModalOpen}
+          mes={carteiraMes}
+          currentValue={carteira}
+          onSave={handleCarteiraSave}
+          onClose={handleCarteiraClose}
+        />
+      )}
     </div>
   );
 }
