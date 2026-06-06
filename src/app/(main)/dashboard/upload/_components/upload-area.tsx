@@ -2,12 +2,15 @@
 
 import { type ChangeEvent, type DragEvent, useRef, useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { Loader2, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 
 export function UploadArea() {
+  const router = useRouter();
   const [isDragOver, setIsDragOver] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,7 +37,12 @@ export function UploadArea() {
         if (!res.ok) {
           throw new Error(data.error || "Erro ao processar upload");
         }
-        toast.success(`Upload realizado: ${data.rows_imported} linhas importadas, ${data.rows_ignored} ignoradas`);
+        toast.success(`Upload realizado: ${data.rows_imported} linhas importadas, ${data.rows_ignored} ignoradas`, {
+          action: {
+            label: "Ver Dashboard",
+            onClick: () => router.push("/dashboard/kpi"),
+          },
+        });
       })
       .catch((error: Error) => {
         toast.error(error.message);

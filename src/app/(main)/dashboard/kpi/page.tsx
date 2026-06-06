@@ -1,0 +1,12 @@
+import { KpiDashboardClient } from "./_components/kpi-dashboard-client";
+
+export default function KpiDashboardPage() {
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <h1 className="font-semibold text-2xl">Dashboard de KPIs</h1>
+      </div>
+      <KpiDashboardClient />
+    </div>
+  );
+}
