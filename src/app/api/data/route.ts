@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
           SELECT
             CASE
               WHEN "receção" IN ('Portal', 'Portal da ERSE', 'Portal Queixa', 'Formulário Site Público') THEN 'Portal'
-              WHEN "receção" IN ('Back-Office', 'Telefone Back-Office') THEN 'Back-Office'
+              WHEN "receção" IN ('Back-Office') THEN 'Back-Office'
               WHEN "receção" = 'Email' THEN 'Email'
               WHEN "receção" = 'Telefone Front' THEN 'Telefone Front'
             END as canal,
@@ -152,7 +152,7 @@ export async function GET(request: NextRequest) {
         `SELECT
           CASE
             WHEN "receção" IN ('Portal', 'Portal da ERSE', 'Portal Queixa', 'Formulário Site Público') THEN 'Portal'
-            WHEN "receção" IN ('Back-Office', 'Telefone Back-Office') THEN 'Back-Office'
+            WHEN "receção" IN ('Back-Office') THEN 'Back-Office'
             WHEN "receção" = 'Email' THEN 'Email'
             WHEN "receção" = 'Telefone Front' THEN 'Telefone Front'
             ELSE NULL
