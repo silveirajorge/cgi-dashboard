@@ -4,9 +4,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Loader2 } from "lucide-react";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { fillCarryForward } from "@/lib/carry-forward";
 
 import { AvaliacaoFilters } from "./avaliacao-filters";
+import { DistribuicaoDonut } from "./distribuicao-donut";
+import { EquipaTable } from "./equipa-table";
+import { EvolucaoProdChart } from "./evolucao-prod-chart";
+import { FerramentaBar } from "./ferramenta-bar";
+import { KpiCardsV2 } from "./kpi-cards-v2";
 
 interface Funcionario {
   id: number;
@@ -303,12 +309,37 @@ export function AvaliacaoDashboardV2Client() {
       ) : data ? (
         /* Two-column layout (65/35) */
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[65%_35%]">
-          {/* LEFT COLUMN */}
+          {/* LEFT COLUMN (65%) */}
           <div className="flex flex-col gap-6">
-            <p className="text-muted-foreground">Carregando...</p>
+            {/* 6 KPI cards with trend indicator */}
+            <KpiCardsV2 semanaAtual={data.semana_atual} semanaAnterior={data.semana_anterior} />
+
+            {/* Distribuição de Desempenho (donut chart) */}
+            <DistribuicaoDonut data={data.distribuicao} total={data.team.length} />
+
+            {/* Uso da Ferramenta (horizontal bar) */}
+            <FerramentaBar
+              utilizouPct={data.uso_ferramenta.utilizou_pct}
+              naoUtilizouPct={data.uso_ferramenta.nao_utilizou_pct}
+              utilizouCount={data.uso_ferramenta.utilizou_count}
+              naoUtilizouCount={data.uso_ferramenta.nao_utilizou_count}
+            />
+
+            {/* Evolução Média de Produtividade (line chart) */}
+            <EvolucaoProdChart data={data.comparativo_semanal} />
+
+            {/* Equipa table */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Equipa</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <EquipaTable team={data.team} onFuncionarioClick={handleFuncionarioSelect} />
+              </CardContent>
+            </Card>
           </div>
 
-          {/* RIGHT COLUMN */}
+          {/* RIGHT COLUMN (35%) */}
           <div className="flex flex-col gap-6">
             <div className="flex items-center justify-center rounded-lg border bg-card p-12">
               <p className="text-muted-foreground">Selecione um funcionário para ver detalhes</p>
