@@ -153,7 +153,7 @@ Plans:
 
 ```
 Plans:
-- [ ] 04.4-01-PLAN.md — Modal de histórico: API SELECT, HistoricoModal, wiring no dashboard
+- [x] 04.4-01-PLAN.md — Modal de histórico: API SELECT, HistoricoModal, wiring no dashboard
 ```
 
 ## Progress
