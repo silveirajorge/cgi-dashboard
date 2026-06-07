@@ -26,6 +26,16 @@ interface StatsResponse {
     funcionario_nome: string;
     media: number;
   }>;
+  media_nota_auditoria: number | null;
+  total_atrasos: number;
+  total_faltas: number;
+  total_erros_criticos: number;
+  media_produtividade: number | null;
+  comparativo_auditoria: Array<{
+    funcionario_nome: string;
+    media_supervisor: number | null;
+    media_auditor: number | null;
+  }>;
 }
 
 interface Funcionario {
@@ -204,11 +214,23 @@ export function AvaliacaoDashboardClient() {
             total_avaliacoes={data.total_avaliacoes}
             melhor_funcionario={data.melhor_funcionario}
             media_categorias={data.media_categorias}
+            media_nota_auditoria={data.media_nota_auditoria}
+            total_atrasos={data.total_atrasos}
+            total_faltas={data.total_faltas}
+            total_erros_criticos={data.total_erros_criticos}
+            media_produtividade={data.media_produtividade}
             onFuncionarioClick={handleFuncionarioClick}
           />
 
           {/* BarChart comparativo */}
           <ComparativeChart data={data.comparativo} onBarClick={handleFuncionarioClick} />
+
+          {/* Gráfico comparativo auditoria */}
+          <ComparativeChart
+            data={data.comparativo}
+            onBarClick={handleFuncionarioClick}
+            comparativoAuditoria={data.comparativo_auditoria}
+          />
         </>
       ) : meses.length === 0 && !loading ? (
         /* Empty state - nenhum dado disponível */

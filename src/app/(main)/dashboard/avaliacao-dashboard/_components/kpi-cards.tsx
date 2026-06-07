@@ -26,6 +26,11 @@ interface KpiCardsProps {
     iniciativa: number | null;
     comunicacao: number | null;
   };
+  media_nota_auditoria: number | null;
+  total_atrasos: number;
+  total_faltas: number;
+  total_erros_criticos: number;
+  media_produtividade: number | null;
   onFuncionarioClick?: (funcionarioId: number) => void;
 }
 
@@ -34,6 +39,11 @@ export function KpiCards({
   total_avaliacoes,
   melhor_funcionario,
   media_categorias,
+  media_nota_auditoria,
+  total_atrasos,
+  total_faltas,
+  total_erros_criticos,
+  media_produtividade,
   onFuncionarioClick,
 }: KpiCardsProps) {
   return (
@@ -120,6 +130,61 @@ export function KpiCards({
             </CardContent>
           </Card>
         ))}
+      </div>
+
+      {/* === KPIs de Auditoria === */}
+      <h3 className="font-medium text-sm">Auditoria</h3>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Média Nota Auditoria */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-muted-foreground text-xs font-medium">Média Nota Auditoria</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <span className="font-medium text-2xl tabular-nums leading-none tracking-tight">
+              {media_nota_auditoria !== null ? media_nota_auditoria.toFixed(1) : "---"}
+            </span>
+          </CardContent>
+        </Card>
+
+        {/* Total Atrasos / Faltas */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-muted-foreground text-xs font-medium">Atrasos / Faltas</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-1">
+            <span className="font-medium text-2xl tabular-nums leading-none tracking-tight">
+              {total_atrasos + total_faltas}
+            </span>
+            <span className="text-muted-foreground text-xs">
+              {total_atrasos} atraso(s) · {total_faltas} falta(s)
+            </span>
+          </CardContent>
+        </Card>
+
+        {/* Erros Críticos */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-muted-foreground text-xs font-medium">Erros Críticos</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <span className="font-medium text-2xl tabular-nums leading-none tracking-tight">
+              {total_erros_criticos}
+            </span>
+          </CardContent>
+        </Card>
+
+        {/* Média Produtividade */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-muted-foreground text-xs font-medium">Média Produtividade</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <span className="font-medium text-2xl tabular-nums leading-none tracking-tight">
+              {media_produtividade !== null ? `${media_produtividade.toFixed(0)}%` : "---"}
+            </span>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
