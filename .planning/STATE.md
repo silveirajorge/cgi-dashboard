@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Phase 4 context gathered
-last_updated: "2026-06-07T07:27:38.932Z"
-last_activity: 2026-06-06 -- Phase 03 execution started
+status: verifying
+stopped_at: Completed 04.1-01-PLAN.md
+last_updated: "2026-06-07T07:51:55.390Z"
+last_activity: 2026-06-07
 progress:
   total_phases: 7
-  completed_phases: 3
-  total_plans: 5
-  completed_plans: 5
-  percent: 43
+  completed_phases: 4
+  total_plans: 6
+  completed_plans: 6
+  percent: 57
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-06)
 
 **Core value:** Upload de CSV diário → dados armazenados com dedup → KPIs gerados automaticamente → visualização no dashboard
-**Current focus:** Phase 03 — kpi-dashboard
+**Current focus:** Phase 4.1 — Cadastro de Funcionários
 
 ## Current Position
 
-Phase: 03 (kpi-dashboard) — EXECUTING
-Plan: 1 of 2
-Status: Executing Phase 03
-Last activity: 2026-06-06 -- Phase 03 execution started
+Phase: 4.1 (Cadastro de Funcionários) — EXECUTING
+Plan: 1 of 1
+Status: Phase complete — ready for verification
+Last activity: 2026-06-07
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -54,6 +54,7 @@ Progress: [░░░░░░░░░░] 0%
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 04.1-cadastro-de-funcionarios P01 | 2min | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,7 @@ Recent decisions affecting current work:
 - (Roadmap): Phase 1 entrega backend completo (SQLite + parser + API) antes de qualquer UI
 - (Roadmap): CSV-03 e CSV-05 (validação/normalização) vão no backend, não no frontend
 - (Roadmap): CUST-01 (preservar temas/layout existentes) é tratado como constraint arquitetural na Fase 1
+- [Phase 04.1-cadastro-de-funcionarios]: Partial update (PUT) aceita nome OU ativo OU ambos — essencial para toggle funcionar sem enviar nome sempre — Permite toggle ativo/inativo sem precisar reenviar o nome
 
 ### Pending Todos
 
@@ -82,6 +84,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-07T07:27:38.921Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-avaliacao-de-desempenho/04-CONTEXT.md
+Last session: 2026-06-07T07:51:55.379Z
+Stopped at: Completed 04.1-01-PLAN.md
+Resume file: None
