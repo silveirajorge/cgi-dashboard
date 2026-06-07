@@ -97,6 +97,54 @@ export async function GET(request: NextRequest) {
       media: number;
     }>;
 
+    // Média nota_auditoria
+    const mediaNotaRow = db
+      .prepare(
+        `SELECT AVG(a.nota_auditoria) as media_nota_auditoria
+         FROM avaliacoes a
+         JOIN funcionarios f ON f.id = a.funcionario_id
+         ${where}`,
+      )
+      .get(...params) as { media_nota_auditoria: number | null };
+
+    // Totais booleanos (atrasos, faltas, erros críticos)
+    const totaisRow = db
+      .prepare(
+        `SELECT
+           SUM(a.atraso) as total_atrasos,
+           SUM(a.falta) as total_faltas,
+           SUM(a.erro_critico) as total_erros_criticos
+         FROM avaliacoes a
+         JOIN funcionarios f ON f.id = a.funcionario_id
+         ${where}`,
+      )
+      .get(...params) as { total_atrasos: number; total_faltas: number; total_erros_criticos: number };
+
+    // Média produtividade percentual
+    const mediaProdRow = db
+      .prepare(
+        `SELECT AVG(a.perc_produtividade) as media_produtividade
+         FROM avaliacoes a
+         JOIN funcionarios f ON f.id = a.funcionario_id
+         ${where}`,
+      )
+      .get(...params) as { media_produtividade: number | null };
+
+    // Comparativo supervisor vs auditor
+    const comparativoAuditoria = db
+      .prepare(
+        `SELECT
+           f.nome as funcionario_nome,
+           AVG(CASE WHEN a.tipo_auditoria = 'supervisor' THEN a.nota_auditoria END) as media_supervisor,
+           AVG(CASE WHEN a.tipo_auditoria = 'auditor' THEN a.nota_auditoria END) as media_auditor
+         FROM avaliacoes a
+         JOIN funcionarios f ON f.id = a.funcionario_id
+         ${where}
+         GROUP BY f.id, f.nome
+         ORDER BY f.nome`,
+      )
+      .all(...params);
+
     return NextResponse.json({
       media_geral: mediaGeralRow.media_geral ?? null,
       media_categorias: {
@@ -110,6 +158,12 @@ export async function GET(request: NextRequest) {
       total_avaliacoes: totalRow.total,
       melhor_funcionario: melhorFuncionario,
       comparativo,
+      media_nota_auditoria: mediaNotaRow.media_nota_auditoria,
+      total_atrasos: totaisRow.total_atrasos,
+      total_faltas: totaisRow.total_faltas,
+      total_erros_criticos: totaisRow.total_erros_criticos,
+      media_produtividade: mediaProdRow.media_produtividade,
+      comparativo_auditoria: comparativoAuditoria,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Erro interno";

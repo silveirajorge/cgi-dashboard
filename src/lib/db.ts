@@ -71,6 +71,25 @@ function runMigrations(database: Database.Database): void {
       FOREIGN KEY (funcionario_id) REFERENCES funcionarios(id)
     )
   `);
+
+  // Migração: adicionar colunas de auditoria à tabela avaliacoes
+  const auditoriaColumns = [
+    `ALTER TABLE avaliacoes ADD COLUMN atraso INTEGER NOT NULL DEFAULT 0`,
+    `ALTER TABLE avaliacoes ADD COLUMN falta INTEGER NOT NULL DEFAULT 0`,
+    `ALTER TABLE avaliacoes ADD COLUMN uso_ferramenta INTEGER NOT NULL DEFAULT 0`,
+    `ALTER TABLE avaliacoes ADD COLUMN erro_critico INTEGER NOT NULL DEFAULT 0`,
+    `ALTER TABLE avaliacoes ADD COLUMN perc_produtividade REAL`,
+    `ALTER TABLE avaliacoes ADD COLUMN nota_auditoria REAL`,
+    `ALTER TABLE avaliacoes ADD COLUMN tipo_auditoria TEXT CHECK(tipo_auditoria IN ('supervisor', 'auditor'))`,
+  ];
+
+  for (const sql of auditoriaColumns) {
+    try {
+      database.exec(sql);
+    } catch {
+      // Coluna já existe — migration idempotente
+    }
+  }
 }
 
 export function createPedidosTable(columns: string[]): void {

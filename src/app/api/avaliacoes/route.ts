@@ -35,6 +35,8 @@ export async function GET(request: NextRequest) {
                 a.pontualidade, a.qualidade, a.produtividade,
                 a.trabalho_equipa, a.iniciativa, a.comunicacao,
                 a.media, a.comentario,
+                a.atraso, a.falta, a.uso_ferramenta, a.erro_critico,
+                a.perc_produtividade, a.nota_auditoria, a.tipo_auditoria,
                 a.funcionario_id, f.nome as funcionario_nome
          FROM avaliacoes a
          JOIN funcionarios f ON f.id = a.funcionario_id
@@ -63,6 +65,13 @@ export async function POST(request: NextRequest) {
       iniciativa,
       comunicacao,
       comentario,
+      atraso,
+      falta,
+      uso_ferramenta,
+      erro_critico,
+      perc_produtividade,
+      nota_auditoria,
+      tipo_auditoria,
     } = body;
 
     if (!funcionario_id || !data_avaliacao) {
@@ -87,6 +96,17 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Validação campos de auditoria
+    if (nota_auditoria === undefined || nota_auditoria === null) {
+      return NextResponse.json({ error: "Nota da auditoria é obrigatória" }, { status: 400 });
+    }
+    if (nota_auditoria < 0 || nota_auditoria > 100) {
+      return NextResponse.json({ error: "Nota da auditoria deve estar entre 0 e 100" }, { status: 400 });
+    }
+    if (!tipo_auditoria || !["supervisor", "auditor"].includes(tipo_auditoria)) {
+      return NextResponse.json({ error: "Tipo de auditoria é obrigatório (supervisor/auditor)" }, { status: 400 });
+    }
+
     const db = getDb();
 
     // INSERT sem media — GENERATED column calcula automaticamente
@@ -94,8 +114,11 @@ export async function POST(request: NextRequest) {
       .prepare(
         `INSERT INTO avaliacoes
          (funcionario_id, data_avaliacao, pontualidade, qualidade,
-          produtividade, trabalho_equipa, iniciativa, comunicacao, comentario)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          produtividade, trabalho_equipa, iniciativa, comunicacao, comentario,
+          atraso, falta, uso_ferramenta, erro_critico, perc_produtividade,
+          nota_auditoria, tipo_auditoria)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,
+                 ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
         funcionario_id,
@@ -107,6 +130,13 @@ export async function POST(request: NextRequest) {
         iniciativa,
         comunicacao,
         comentario ?? null,
+        atraso ? 1 : 0,
+        falta ? 1 : 0,
+        uso_ferramenta ? 1 : 0,
+        erro_critico ? 1 : 0,
+        perc_produtividade ?? null,
+        nota_auditoria,
+        tipo_auditoria,
       );
 
     // Buscar o registro inserido (incluindo media calculada)
