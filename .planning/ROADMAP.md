@@ -18,6 +18,7 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
 - [x] **Phase 4.3: Dashboard do Grupo** — KPIs do grupo de avaliação com filtros e comparativo (completed 2026-06-07)
 - [x] **Phase 4.4: Histórico por Funcionário** — Histórico de avaliações com gráfico de evolução e tabela (completed 2026-06-07)
 - [x] **Phase 4.5: Extensão da Auditoria** — Novos campos: atrasos/faltas, ferramenta, erro crítico, produtividade %, nota auditoria, tipo supervisor/auditor (completed 2026-06-07)
+- [ ] **Phase 5: Dashboard Avaliação v2** — Redesign completo: duas colunas, Score Final, comparação semanal, gráficos linha, donut, tabela equipa, detalhamento individual
 
 ## Phase Details
 
@@ -169,6 +170,7 @@ Plans:
 | 4.3 - Dashboard do Grupo | 1/1 | Complete   | 2026-06-07 |
 | 4.4 - Histórico por Funcionário | 1/1 | Complete   | 2026-06-07 |
 | 4.5 - Extensão da Auditoria | 1/1 | Complete   | 2026-06-07 |
+| 5 - Dashboard Avaliação v2 | 0/0 | Pending    | — |
 
 ---
 
@@ -187,4 +189,17 @@ Plans:
 - [x] 04.5-01-PLAN.md — Migration, API, formulário e dashboard com 7 novos campos de auditoria
 ```
 
-*Roadmap generated: 2026-06-06*
+### Phase 5: Dashboard Avaliação v2
+**Goal:** Redesign completo do dashboard com Score Final, comparação semanal, gráficos linha, donut, tabela equipa e detalhamento individual.
+**Mode:** mvp
+**Depends on:** Phase 4.5 (campos de auditoria)
+**Success Criteria** (what must be TRUE):
+  1. Score Final calculado corretamente (média composta com penalidades/bónus)
+  2. 6 cards KPI com indicador de tendência vs semana anterior
+  3. Donut de distribuição e barra de uso da ferramenta
+  4. Tabela da equipa com status e estrelas
+  5. Detalhamento individual com Score, gráficos e comentários
+  6. Dados semana a semana, com carry forward quando não há avaliações
+**Plans:** 0/0 plans pending
+
+*Roadmap generated: 2026-06-07*
