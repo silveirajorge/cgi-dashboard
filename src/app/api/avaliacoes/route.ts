@@ -31,7 +31,10 @@ export async function GET(request: NextRequest) {
 
     const rows = db
       .prepare(
-        `SELECT a.id, a.data_avaliacao, a.media, a.comentario,
+        `SELECT a.id, a.data_avaliacao,
+                a.pontualidade, a.qualidade, a.produtividade,
+                a.trabalho_equipa, a.iniciativa, a.comunicacao,
+                a.media, a.comentario,
                 a.funcionario_id, f.nome as funcionario_nome
          FROM avaliacoes a
          JOIN funcionarios f ON f.id = a.funcionario_id
