@@ -18,7 +18,7 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
 - [x] **Phase 4.3: Dashboard do Grupo** — KPIs do grupo de avaliação com filtros e comparativo (completed 2026-06-07)
 - [x] **Phase 4.4: Histórico por Funcionário** — Histórico de avaliações com gráfico de evolução e tabela (completed 2026-06-07)
 - [x] **Phase 4.5: Extensão da Auditoria** — Novos campos: atrasos/faltas, ferramenta, erro crítico, produtividade %, nota auditoria, tipo supervisor/auditor (completed 2026-06-07)
-- [ ] **Phase 5: Dashboard Avaliação v2** — Redesign completo: duas colunas, Score Final, comparação semanal, gráficos linha, donut, tabela equipa, detalhamento individual
+- [x] **Phase 5: Dashboard Avaliação v2** — Redesign completo: duas colunas, Score Final, comparação semanal, gráficos linha, donut, tabela equipa, detalhamento individual (completed 2026-06-07)
 
 ## Phase Details
 
@@ -170,7 +170,7 @@ Plans:
 | 4.3 - Dashboard do Grupo | 1/1 | Complete   | 2026-06-07 |
 | 4.4 - Histórico por Funcionário | 1/1 | Complete   | 2026-06-07 |
 | 4.5 - Extensão da Auditoria | 1/1 | Complete   | 2026-06-07 |
-| 5 - Dashboard Avaliação v2 | 0/0 | Pending    | — |
+| 5 - Dashboard Avaliação v2 | 1/1 | Complete   | 2026-06-07 |
 
 ---
 
@@ -200,9 +200,9 @@ Plans:
   4. Tabela da equipa com status e estrelas
   5. Detalhamento individual com Score, gráficos e comentários
   6. Dados semana a semana, com carry forward quando não há avaliações
-**Plans:** 1/1 plans pending
+**Plans:** 1/1 plans complete
 
 ```
 Plans:
-- [ ] 05-01-PLAN.md — Full v2: 3 API routes, 12 components, Score Final, KPIs semanais, donut, linha, tabela, detalhamento individual
+- [x] 05-01-PLAN.md — Full v2: 3 API routes, 12 components, Score Final, KPIs semanais, donut, linha, tabela, detalhamento individual
 ```
