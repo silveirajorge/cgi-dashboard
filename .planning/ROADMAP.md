@@ -13,7 +13,7 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
 - [x] **Phase 1: Backend Foundation** — Infraestrutura de backend: SQLite, parser CSV, API routes, arquitetura em camadas (completed 2026-06-06)
 - [x] **Phase 2: Upload UI** — Interface de upload: formulário, drag & drop, validação, feedback visual (completed 2026-06-06)
 - [x] **Phase 3: KPI Dashboard** — Dashboard de KPIs: cards automáticos, gráficos, atualização pós-upload (completed 2026-06-06)
-- [ ] **Phase 4.1: Cadastro de Funcionários** — Página de gestão de funcionários com CRUD, soft delete
+- [x] **Phase 4.1: Cadastro de Funcionários** — Página de gestão de funcionários com CRUD, soft delete (completed 2026-06-07)
 - [ ] **Phase 4.2: Formulário de Avaliação** — Formulário de avaliação individual com categorias, nota e comentário
 - [ ] **Phase 4.3: Dashboard do Grupo** — KPIs do grupo de avaliação com filtros e comparativo
 - [ ] **Phase 4.4: Histórico por Funcionário** — Histórico de avaliações com gráfico de evolução e tabela
@@ -93,7 +93,7 @@ Phase 1 (Backend Foundation)
    3. Toggle ativar/desativar (soft delete — dados mantidos na BD)
    4. Tabela SQLite `funcionarios` com colunas: id, nome, ativo, created_at
    5. API endpoints: GET /api/funcionarios, POST, PUT /api/funcionarios/[id], DELETE (soft)
-**Plans:** 1/1 plan complete
+**Plans:** 1/1 plans complete
 
 ```
 Plans:
@@ -104,7 +104,7 @@ Plans:
 **Goal:** Formulário de avaliação individual com categorias de desempenho.
 **Mode:** mvp
 **Depends on:** Phase 4.1 (funcionários cadastrados)
-**Requirements:** (a definir)
+**Requirements:** SC-01, SC-02, SC-03, SC-04, SC-05, SC-06, SC-07, SC-08, SC-09
 **Success Criteria** (what must be TRUE):
   1. Página `/dashboard/avaliacao` com listagem de avaliações + botão "Nova Avaliação"
   2. Formulário com 6 categorias (Pontualidade, Qualidade, Produtividade, Trabalho em Equipa, Iniciativa, Comunicação) — escala 1-10
@@ -112,7 +112,12 @@ Plans:
   4. Salva na BD com data específica + id_funcionario
   5. Tabela SQLite `avaliacoes`
   6. API: GET /api/avaliacoes, POST /api/avaliacoes, GET /api/avaliacoes/[id]
-**Plans:** 0/0 plans pending
+**Plans:** 1/1 plans complete
+
+```
+Plans:
+- [x] 04.2-01-PLAN.md — Full form: DB migration, API routes, page, table + filters, inline form, detail modal
+```
 
 ### Phase 4.3: Dashboard do Grupo
 **Goal:** Dashboard de KPIs do grupo de avaliação com filtros e comparativo entre funcionários.
@@ -148,8 +153,8 @@ Plans:
 | 1 - Backend Foundation | 2/2 | Complete   | 2026-06-06 |
 | 2 - Upload UI | 1/1 | Complete   | 2026-06-06 |
 | 3 - KPI Dashboard | 2/2 | Complete   | 2026-06-06 |
-| 4.1 - Cadastro de Funcionários | 0/0 | Pending    | — |
-| 4.2 - Formulário de Avaliação | 0/0 | Pending    | — |
+| 4.1 - Cadastro de Funcionários | 1/1 | Complete   | 2026-06-07 |
+| 4.2 - Formulário de Avaliação | 1/1 | Pending    | — |
 | 4.3 - Dashboard do Grupo | 0/0 | Pending    | — |
 | 4.4 - Histórico por Funcionário | 0/0 | Pending    | — |
 
