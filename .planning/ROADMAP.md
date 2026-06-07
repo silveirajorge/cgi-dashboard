@@ -86,14 +86,19 @@ Phase 1 (Backend Foundation)
 **Goal:** Página de gestão de funcionários com cadastro, edição e soft delete.
 **Mode:** mvp
 **Depends on:** Phase 3 (infra existente)
-**Requirements:** (a definir)
+**Requirements:** SC-01, SC-02, SC-03, SC-04, SC-05
 **Success Criteria** (what must be TRUE):
-  1. Página `/dashboard/funcionarios` com tabela de funcionários (nome, ativo/inativo)
-  2. Botão "Adicionar Funcionário" com formulário (nome)
-  3. Toggle ativar/desativar (soft delete — dados mantidos na BD)
-  4. Tabela SQLite `funcionarios` com colunas: id, nome, ativo, created_at
-  5. API endpoints: GET /api/funcionarios, POST, PUT /api/funcionarios/[id], DELETE (soft)
-**Plans:** 0/0 plans pending
+   1. Página `/dashboard/funcionarios` com tabela de funcionários (nome, ativo/inativo)
+   2. Botão "Adicionar Funcionário" com formulário (nome)
+   3. Toggle ativar/desativar (soft delete — dados mantidos na BD)
+   4. Tabela SQLite `funcionarios` com colunas: id, nome, ativo, created_at
+   5. API endpoints: GET /api/funcionarios, POST, PUT /api/funcionarios/[id], DELETE (soft)
+**Plans:** 1/1 plan complete
+
+```
+Plans:
+- [x] 04.1-01-PLAN.md — Full CRUD: DB migration, API routes, page, table, modal
+```
 
 ### Phase 4.2: Formulário de Avaliação
 **Goal:** Formulário de avaliação individual com categorias de desempenho.
