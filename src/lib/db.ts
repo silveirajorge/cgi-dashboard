@@ -39,6 +39,16 @@ function runMigrations(database: Database.Database): void {
   database.exec(`
     CREATE INDEX IF NOT EXISTS idx_pedidos_cil ON pedidos(cil)
   `);
+
+  database.exec(`
+    CREATE TABLE IF NOT EXISTS funcionarios (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome TEXT NOT NULL,
+      ativo INTEGER NOT NULL DEFAULT 1,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
 }
 
 export function createPedidosTable(columns: string[]): void {
