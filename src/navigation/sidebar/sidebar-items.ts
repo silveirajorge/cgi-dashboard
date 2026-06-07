@@ -48,9 +48,8 @@ export const sidebarItems: NavGroup[] = [
     items: [
       {
         title: "Dashboard",
-        url: "#",
+        url: "/dashboard/avaliacao-dashboard",
         icon: LineChart,
-        comingSoon: true,
       },
       {
         title: "Avaliação",
