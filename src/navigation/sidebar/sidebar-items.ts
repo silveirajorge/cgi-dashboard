@@ -54,9 +54,8 @@ export const sidebarItems: NavGroup[] = [
       },
       {
         title: "Avaliação",
-        url: "#",
+        url: "/dashboard/avaliacao",
         icon: LineChart,
-        comingSoon: true,
       },
       {
         title: "Funcionários",
