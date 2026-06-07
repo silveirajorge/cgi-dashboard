@@ -8,11 +8,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { fillCarryForward } from "@/lib/carry-forward";
 
 import { AvaliacaoFilters } from "./avaliacao-filters";
+import { ComentariosList } from "./comentarios-list";
 import { DistribuicaoDonut } from "./distribuicao-donut";
 import { EquipaTable } from "./equipa-table";
 import { EvolucaoProdChart } from "./evolucao-prod-chart";
 import { FerramentaBar } from "./ferramenta-bar";
+import { FuncionarioSelect } from "./funcionario-select";
 import { KpiCardsV2 } from "./kpi-cards-v2";
+import { ProdHistChart } from "./prod-hist-chart";
+import { ResumoCard } from "./resumo-card";
+import { ScoreEvolChart } from "./score-evol-chart";
 
 interface Funcionario {
   id: number;
@@ -125,10 +130,9 @@ export function AvaliacaoDashboardV2Client() {
   const [to, setTo] = useState("");
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [selectedFuncionarioId, setSelectedFuncionarioId] = useState("all");
-  // Biome: unused vars are intentional scaffold — used in Task 3
-  const [_selectedFuncionarioDetalhe, setSelectedFuncionarioDetalhe] = useState<number | null>(null);
-  const [_detalhe, setDetalhe] = useState<HistoricoResponse | null>(null);
-  const [_detalheLoading, setDetalheLoading] = useState(false);
+  const [selectedFuncionarioDetalhe, setSelectedFuncionarioDetalhe] = useState<number | null>(null);
+  const [detalhe, setDetalhe] = useState<HistoricoResponse | null>(null);
+  const [detalheLoading, setDetalheLoading] = useState(false);
 
   const initializedRef = useRef(false);
 
@@ -341,9 +345,37 @@ export function AvaliacaoDashboardV2Client() {
 
           {/* RIGHT COLUMN (35%) */}
           <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-center rounded-lg border bg-card p-12">
-              <p className="text-muted-foreground">Selecione um funcionário para ver detalhes</p>
-            </div>
+            <FuncionarioSelect
+              funcionarios={data.team.map((t) => ({ id: t.id, nome: t.nome }))}
+              selectedId={selectedFuncionarioDetalhe}
+              onChange={handleFuncionarioSelect}
+              onClear={() => {
+                setSelectedFuncionarioDetalhe(null);
+                setDetalhe(null);
+              }}
+            />
+            {selectedFuncionarioDetalhe && detalhe ? (
+              <>
+                {(() => {
+                  const f = data.team.find((t) => t.id === selectedFuncionarioDetalhe);
+                  if (!f) return null;
+                  return (
+                    <>
+                      <ResumoCard funcionario={f} />
+                      <ScoreEvolChart data={detalhe.evolution} />
+                      <ProdHistChart data={detalhe.evolution} />
+                      <ComentariosList comentarios={detalhe.comentarios} />
+                    </>
+                  );
+                })()}
+              </>
+            ) : (
+              <div className="flex items-center justify-center rounded-lg border bg-card p-12">
+                <p className="text-muted-foreground">
+                  {detalheLoading ? "Carregando detalhes..." : "Selecione um funcionário para ver detalhes"}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       ) : meses.length === 0 && !loading ? (
