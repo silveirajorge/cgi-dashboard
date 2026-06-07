@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Combobox,
   ComboboxContent,
@@ -18,6 +19,7 @@ import {
 } from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 interface FuncionarioOption {
   id: number;
@@ -57,6 +59,13 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
   const [dataAvaliacao, setDataAvaliacao] = useState(() => new Date().toISOString().split("T")[0]);
   const [notas, setNotas] = useState<NotasState>(getDefaultNotas);
   const [comentario, setComentario] = useState("");
+  const [atraso, setAtraso] = useState(false);
+  const [falta, setFalta] = useState(false);
+  const [usoFerramenta, setUsoFerramenta] = useState(false);
+  const [erroCritico, setErroCritico] = useState(false);
+  const [percProdutividade, setPercProdutividade] = useState<number | null>(null);
+  const [notaAuditoria, setNotaAuditoria] = useState<number | null>(null);
+  const [tipoAuditoria, setTipoAuditoria] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -94,6 +103,19 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
       }
     }
 
+    if (notaAuditoria === null || notaAuditoria === undefined) {
+      setError("Nota da auditoria é obrigatória");
+      return;
+    }
+    if (notaAuditoria < 0 || notaAuditoria > 100) {
+      setError("Nota da auditoria deve estar entre 0 e 100");
+      return;
+    }
+    if (!tipoAuditoria) {
+      setError("Selecione o tipo de auditoria (Supervisor ou Auditor)");
+      return;
+    }
+
     setSaving(true);
     setError(null);
 
@@ -106,6 +128,13 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
           data_avaliacao: dataAvaliacao,
           ...notas,
           comentario: comentario.trim() || null,
+          atraso,
+          falta,
+          uso_ferramenta: usoFerramenta,
+          erro_critico: erroCritico,
+          perc_produtividade: percProdutividade,
+          nota_auditoria: notaAuditoria,
+          tipo_auditoria: tipoAuditoria,
         }),
       });
 
@@ -200,6 +229,72 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
               Média: <strong>{mediaPreview.toFixed(2)}</strong>
             </p>
           )}
+
+          {/* === Auditoria === */}
+          <h3 className="font-medium text-sm">Auditoria</h3>
+
+          {/* Grid 2-col de checkboxes */}
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { key: "atraso", label: "Atraso", checked: atraso, setter: setAtraso },
+              { key: "falta", label: "Falta", checked: falta, setter: setFalta },
+              { key: "uso_ferramenta", label: "Uso de Ferramenta", checked: usoFerramenta, setter: setUsoFerramenta },
+              { key: "erro_critico", label: "Erro Crítico", checked: erroCritico, setter: setErroCritico },
+            ].map((item) => (
+              <div key={item.key} className="flex items-center gap-2">
+                <Checkbox
+                  id={item.key}
+                  checked={item.checked}
+                  onCheckedChange={(checked) => item.setter(checked === true)}
+                />
+                <Label htmlFor={item.key}>{item.label}</Label>
+              </div>
+            ))}
+          </div>
+
+          {/* Grid 2-col inputs numéricos */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1">
+              <Label htmlFor="perc-produtividade">Produtividade (%)</Label>
+              <Input
+                id="perc-produtividade"
+                type="number"
+                min={0}
+                step={1}
+                value={percProdutividade ?? ""}
+                onChange={(e) => setPercProdutividade(e.target.value ? Number(e.target.value) : null)}
+                placeholder="Ex: 110"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <Label htmlFor="nota-auditoria">Nota da Auditoria (0-100)</Label>
+              <Input
+                id="nota-auditoria"
+                type="number"
+                min={0}
+                max={100}
+                step={1}
+                value={notaAuditoria ?? ""}
+                onChange={(e) => setNotaAuditoria(e.target.value ? Number(e.target.value) : null)}
+                placeholder="0-100"
+              />
+            </div>
+          </div>
+
+          {/* RadioGroup tipo_auditoria */}
+          <div className="flex flex-col gap-1">
+            <Label>Tipo de Auditoria</Label>
+            <RadioGroup value={tipoAuditoria} onValueChange={setTipoAuditoria}>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="supervisor" id="tipo-supervisor" />
+                <Label htmlFor="tipo-supervisor">Supervisor</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="auditor" id="tipo-auditor" />
+                <Label htmlFor="tipo-auditor">Auditor</Label>
+              </div>
+            </RadioGroup>
+          </div>
 
           {/* Textarea comentário */}
           <div className="flex flex-col gap-1">
