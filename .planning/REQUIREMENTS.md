@@ -49,6 +49,17 @@
 - [x] **SC-5**: Apenas funcionários ativos entram nas métricas
 - [x] **SC-6**: API: GET /api/avaliacoes/stats?from=&to=&funcionario_id=
 
+### Extensão da Auditoria (4.5)
+
+- [x] **D4.5-01**: Migration SQLite: 7 colunas na tabela avaliacoes (atraso, falta, uso_ferramenta, erro_critico, perc_produtividade, nota_auditoria, tipo_auditoria)
+- [x] **D4.5-02**: Formulário: checkboxes, inputs numéricos e radio/select para auditoria
+- [x] **D4.5-03**: nota_auditoria e tipo_auditoria obrigatórios (validação dupla)
+- [x] **D4.5-04**: POST /api/avaliacoes aceita novos campos
+- [x] **D4.5-05**: GET /api/avaliacoes retorna novos campos
+- [x] **D4.5-06**: GET /api/avaliacoes/stats inclui novas agregações
+- [x] **D4.5-07**: Dashboard com novos cards KPI de auditoria
+- [x] **D4.5-08**: Gráfico comparativo supervisor vs auditor
+
 ## v2 Requirements
 
 ### Data Display
@@ -94,10 +105,18 @@
 | SC-4 | Phase 4.3 | Complete |
 | SC-5 | Phase 4.3 | Complete |
 | SC-6 | Phase 4.3 | Complete |
+| D4.5-01 | Phase 4.5 | Complete |
+| D4.5-02 | Phase 4.5 | Complete |
+| D4.5-03 | Phase 4.5 | Complete |
+| D4.5-04 | Phase 4.5 | Complete |
+| D4.5-05 | Phase 4.5 | Complete |
+| D4.5-06 | Phase 4.5 | Complete |
+| D4.5-07 | Phase 4.5 | Complete |
+| D4.5-08 | Phase 4.5 | Complete |
 
 **Coverage:**
-- Total requirements: 24
-- Mapped to phases: 24
+- Total requirements: 32
+- Mapped to phases: 32
 - Unmapped: 0 ✓
 
 ---

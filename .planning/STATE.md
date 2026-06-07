@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 4.3 plan 01 completed
-last_updated: "2026-06-07T09:43:11.728Z"
-last_activity: 2026-06-07 -- Phase 4.4 completed
+status: executing
+stopped_at: Phase 4.5 plan 01 completed
+last_updated: "2026-06-07T10:56:00.000Z"
+last_activity: 2026-06-07 -- Phase 4.5 plan 01 completed
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 9
-  completed_plans: 9
-  percent: 100
+  total_phases: 8
+  completed_phases: 8
+  total_plans: 10
+  completed_plans: 10
+  percent: 88
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-06)
 
 **Core value:** Upload de CSV diário → dados armazenados com dedup → KPIs gerados automaticamente → visualização no dashboard
-**Current focus:** Phase 4.4 — Histórico por Funcionário
+**Current focus:** Phase 4.5 — Extensão da Auditoria
 
 ## Current Position
 
-Phase: 4.4 (Histórico por Funcionário) — COMPLETE
+Phase: 4.5 (Extensão da Auditoria) — COMPLETE
 Plan: 1 of 1
-Status: Phase complete — ready for verification
-Last activity: 2026-06-07 -- Phase 4.4 completed
+Status: Phase 4.5 complete
+Last activity: 2026-06-07 -- Phase 4.5 plan 01 completed
 
 Progress: [██████████] 100%
 
@@ -59,6 +59,7 @@ Progress: [██████████] 100%
 | Phase 04.3-dashboard-do-grupo P01 | 2min | 2 tasks | 7 files |
 | Phase 04.3-dashboard-do-grupo P01 | 2 min | 2 tasks | 7 files |
 | Phase 04.4-historico-por-funcion-rio P01 | 3 min | 2 tasks | 6 files |
+| Phase 04.5-extensao-auditoria P01 | 12 min | 3 tasks | 7 files |
 
 ## Accumulated Context
 

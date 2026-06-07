@@ -17,7 +17,7 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
 - [x] **Phase 4.2: Formulário de Avaliação** — Formulário de avaliação individual com categorias, nota e comentário (completed 2026-06-07)
 - [x] **Phase 4.3: Dashboard do Grupo** — KPIs do grupo de avaliação com filtros e comparativo (completed 2026-06-07)
 - [x] **Phase 4.4: Histórico por Funcionário** — Histórico de avaliações com gráfico de evolução e tabela (completed 2026-06-07)
-- [ ] **Phase 4.5: Extensão da Auditoria** — Novos campos: atrasos/faltas, ferramenta, erro crítico, produtividade %, nota auditoria, tipo supervisor/auditor
+- [x] **Phase 4.5: Extensão da Auditoria** — Novos campos: atrasos/faltas, ferramenta, erro crítico, produtividade %, nota auditoria, tipo supervisor/auditor (completed 2026-06-07)
 
 ## Phase Details
 
@@ -168,7 +168,7 @@ Plans:
 | 4.2 - Formulário de Avaliação | 1/1 | Complete   | 2026-06-07 |
 | 4.3 - Dashboard do Grupo | 1/1 | Complete   | 2026-06-07 |
 | 4.4 - Histórico por Funcionário | 1/1 | Complete   | 2026-06-07 |
-| 4.5 - Extensão da Auditoria | 0/1 | Pending    | — |
+| 4.5 - Extensão da Auditoria | 1/1 | Complete   | 2026-06-07 |
 
 ---
 
@@ -177,14 +177,14 @@ Plans:
 **Mode:** mvp
 **Depends on:** Phase 4.2 (formulário existente)
 **Success Criteria** (what must be TRUE):
-   1. Formulário de avaliação tem novos campos (booleans, %, nota, tipo)
-   2. API aceita e retorna os novos campos
-   3. Dashboard exibe novos KPIs e gráfico comparativo supervisor vs auditor
-**Plans:** 1 plan
+    1. Formulário de avaliação tem novos campos (booleans, %, nota, tipo)
+    2. API aceita e retorna os novos campos
+    3. Dashboard exibe novos KPIs e gráfico comparativo supervisor vs auditor
+**Plans:** 1/1 plans complete
 
 ```
 Plans:
-- [ ] 04.5-01-PLAN.md — Migration, API, formulário e dashboard com 7 novos campos de auditoria
+- [x] 04.5-01-PLAN.md — Migration, API, formulário e dashboard com 7 novos campos de auditoria
 ```
 
 *Roadmap generated: 2026-06-06*
