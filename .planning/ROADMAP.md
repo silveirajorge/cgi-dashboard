@@ -16,7 +16,8 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
 - [x] **Phase 4.1: Cadastro de Funcionários** — Página de gestão de funcionários com CRUD, soft delete (completed 2026-06-07)
 - [x] **Phase 4.2: Formulário de Avaliação** — Formulário de avaliação individual com categorias, nota e comentário (completed 2026-06-07)
 - [x] **Phase 4.3: Dashboard do Grupo** — KPIs do grupo de avaliação com filtros e comparativo (completed 2026-06-07)
-- [ ] **Phase 4.4: Histórico por Funcionário** — Histórico de avaliações com gráfico de evolução e tabela
+- [x] **Phase 4.4: Histórico por Funcionário** — Histórico de avaliações com gráfico de evolução e tabela (completed 2026-06-07)
+- [ ] **Phase 4.5: Extensão da Auditoria** — Novos campos: atrasos/faltas, ferramenta, erro crítico, produtividade %, nota auditoria, tipo supervisor/auditor
 
 ## Phase Details
 
@@ -166,8 +167,19 @@ Plans:
 | 4.1 - Cadastro de Funcionários | 1/1 | Complete   | 2026-06-07 |
 | 4.2 - Formulário de Avaliação | 1/1 | Complete   | 2026-06-07 |
 | 4.3 - Dashboard do Grupo | 1/1 | Complete   | 2026-06-07 |
-| 4.4 - Histórico por Funcionário | 0/1 | Pending    | — |
+| 4.4 - Histórico por Funcionário | 1/1 | Complete   | 2026-06-07 |
+| 4.5 - Extensão da Auditoria | 0/0 | Pending    | — |
 
 ---
+
+### Phase 4.5: Extensão da Auditoria
+**Goal:** Estender formulário e dashboard com novos campos: atrasos, faltas, uso ferramenta, erro crítico (booleanos), produtividade (%), nota auditoria (0-100) e tipo (supervisor/auditor).
+**Mode:** mvp
+**Depends on:** Phase 4.2 (formulário existente)
+**Success Criteria** (what must be TRUE):
+  1. Formulário de avaliação tem novos campos (booleans, %, nota, tipo)
+  2. API aceita e retorna os novos campos
+  3. Dashboard exibe novos KPIs e gráfico comparativo supervisor vs auditor
+**Plans:** 0/0 plans pending
 
 *Roadmap generated: 2026-06-06*
