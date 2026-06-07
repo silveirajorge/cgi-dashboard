@@ -36,9 +36,11 @@ function runMigrations(database: Database.Database): void {
   `);
 
   // Índice em CIL para performance de queries CIL
-  database.exec(`
-    CREATE INDEX IF NOT EXISTS idx_pedidos_cil ON pedidos(cil)
-  `);
+  try {
+    database.exec(`CREATE INDEX IF NOT EXISTS idx_pedidos_cil ON pedidos(cil)`);
+  } catch {
+    // Tabela pedidos pode não existir ainda (criada dinamicamente no upload)
+  }
 
   database.exec(`
     CREATE TABLE IF NOT EXISTS funcionarios (
