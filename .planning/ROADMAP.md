@@ -150,11 +150,11 @@ Plans:
    3. Filtro por período → SC4.4-03
    4. Apenas leitura (sem editar/apagar avaliações passadas) → SC4.4-04
    5. API: GET /api/avaliacoes?funcionario_id=&from=&to= → SC4.4-05
-**Plans:** 1/1 plans pending
+**Plans:** 1/1 plans complete
 
 ```
 Plans:
-- [x] 04.4-01-PLAN.md — Modal de histórico: API SELECT, HistoricoModal, wiring no dashboard
+- [x] 04.4-01-PLAN.md — Modal de histórico: API SELECT, HistoricoModal, wiring no dashboard (completed 2026-06-07)
 ```
 
 ## Progress
