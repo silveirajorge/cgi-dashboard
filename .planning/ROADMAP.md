@@ -142,14 +142,19 @@ Plans:
 **Goal:** Visualização do histórico completo de avaliações de cada funcionário.
 **Mode:** mvp
 **Depends on:** Phase 4.2 (avaliações no banco)
-**Requirements:** (a definir)
+**Requirements:** SC4.4-01, SC4.4-02, SC4.4-03, SC4.4-04, SC4.4-05
 **Success Criteria** (what must be TRUE):
-  1. Clique no nome do funcionário no dashboard abre o histórico
-  2. Gráfico de evolução temporal (linha) + tabela com detalhes das avaliações
-  3. Filtro por período
-  4. Apenas leitura (sem editar/apagar avaliações passadas)
-  5. API: GET /api/avaliacoes/[funcionario_id]?from=&to=
-**Plans:** 0/0 plans pending
+   1. Clique no nome do funcionário no dashboard abre o histórico → SC4.4-01
+   2. Gráfico de evolução temporal (linha) + tabela com detalhes das avaliações → SC4.4-02
+   3. Filtro por período → SC4.4-03
+   4. Apenas leitura (sem editar/apagar avaliações passadas) → SC4.4-04
+   5. API: GET /api/avaliacoes?funcionario_id=&from=&to= → SC4.4-05
+**Plans:** 1/1 plans pending
+
+```
+Plans:
+- [ ] 04.4-01-PLAN.md — Modal de histórico: API SELECT, HistoricoModal, wiring no dashboard
+```
 
 ## Progress
 
@@ -161,7 +166,7 @@ Plans:
 | 4.1 - Cadastro de Funcionários | 1/1 | Complete   | 2026-06-07 |
 | 4.2 - Formulário de Avaliação | 1/1 | Complete   | 2026-06-07 |
 | 4.3 - Dashboard do Grupo | 1/1 | Complete   | 2026-06-07 |
-| 4.4 - Histórico por Funcionário | 0/0 | Pending    | — |
+| 4.4 - Histórico por Funcionário | 0/1 | Pending    | — |
 
 ---
 
