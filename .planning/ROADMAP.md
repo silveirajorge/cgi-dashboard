@@ -15,7 +15,7 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
 - [x] **Phase 3: KPI Dashboard** — Dashboard de KPIs: cards automáticos, gráficos, atualização pós-upload (completed 2026-06-06)
 - [x] **Phase 4.1: Cadastro de Funcionários** — Página de gestão de funcionários com CRUD, soft delete (completed 2026-06-07)
 - [x] **Phase 4.2: Formulário de Avaliação** — Formulário de avaliação individual com categorias, nota e comentário (completed 2026-06-07)
-- [ ] **Phase 4.3: Dashboard do Grupo** — KPIs do grupo de avaliação com filtros e comparativo
+- [x] **Phase 4.3: Dashboard do Grupo** — KPIs do grupo de avaliação com filtros e comparativo (completed 2026-06-07)
 - [ ] **Phase 4.4: Histórico por Funcionário** — Histórico de avaliações com gráfico de evolução e tabela
 
 ## Phase Details
@@ -131,11 +131,11 @@ Plans:
   4. Filtro por período (dropdown mês + date range) e dropdown de funcionário (ou "Todos")
   5. Apenas funcionários ativos entram nas métricas
   6. API: GET /api/avaliacoes/stats?from=&to=&funcionario_id=
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 ```
 Plans:
-- [ ] 04.3-01-PLAN.md — Full dashboard: stats API, cards, BarChart, filters
+- [x] 04.3-01-PLAN.md — Full dashboard: stats API, cards, BarChart, filters
 ```
 
 ### Phase 4.4: Histórico por Funcionário
@@ -160,7 +160,7 @@ Plans:
 | 3 - KPI Dashboard | 2/2 | Complete   | 2026-06-06 |
 | 4.1 - Cadastro de Funcionários | 1/1 | Complete   | 2026-06-07 |
 | 4.2 - Formulário de Avaliação | 1/1 | Complete   | 2026-06-07 |
-| 4.3 - Dashboard do Grupo | 0/1 | Planning   | — |
+| 4.3 - Dashboard do Grupo | 1/1 | Complete   | 2026-06-07 |
 | 4.4 - Histórico por Funcionário | 0/0 | Pending    | — |
 
 ---

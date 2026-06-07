@@ -38,6 +38,17 @@
 
 - [ ] **CUST-01**: Sistema de temas e layout existente é preservado (theme switcher, sidebar, layout controls)
 
+## Fase 4 — Avaliação de Desempenho
+
+### Dashboard do Grupo (4.3)
+
+- [x] **SC-1**: Página `/dashboard/avaliacao-dashboard` com KPIs do grupo
+- [x] **SC-2**: KPIs: média geral, média por categoria, total avaliações, melhor funcionário
+- [x] **SC-3**: Gráfico comparativo entre funcionários (barras)
+- [x] **SC-4**: Filtro por período (dropdown mês + date range) e dropdown de funcionário (ou "Todos")
+- [x] **SC-5**: Apenas funcionários ativos entram nas métricas
+- [x] **SC-6**: API: GET /api/avaliacoes/stats?from=&to=&funcionario_id=
+
 ## v2 Requirements
 
 ### Data Display
@@ -77,10 +88,16 @@
 | ARCH-03 | Phase 1 | Pending |
 | ARCH-04 | Phase 1 | Pending |
 | CUST-01 | Phase 1 | Pending |
+| SC-1 | Phase 4.3 | Complete |
+| SC-2 | Phase 4.3 | Complete |
+| SC-3 | Phase 4.3 | Complete |
+| SC-4 | Phase 4.3 | Complete |
+| SC-5 | Phase 4.3 | Complete |
+| SC-6 | Phase 4.3 | Complete |
 
 **Coverage:**
-- v1 requirements: 18 total
-- Mapped to phases: 18
+- Total requirements: 24
+- Mapped to phases: 24
 - Unmapped: 0 ✓
 
 ---
