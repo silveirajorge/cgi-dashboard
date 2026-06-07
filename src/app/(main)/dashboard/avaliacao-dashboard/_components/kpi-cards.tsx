@@ -26,9 +26,16 @@ interface KpiCardsProps {
     iniciativa: number | null;
     comunicacao: number | null;
   };
+  onFuncionarioClick?: (funcionarioId: number) => void;
 }
 
-export function KpiCards({ media_geral, total_avaliacoes, melhor_funcionario, media_categorias }: KpiCardsProps) {
+export function KpiCards({
+  media_geral,
+  total_avaliacoes,
+  melhor_funcionario,
+  media_categorias,
+  onFuncionarioClick,
+}: KpiCardsProps) {
   return (
     <div className="flex flex-col gap-4">
       {/* Primary KPIs */}
@@ -84,7 +91,13 @@ export function KpiCards({ media_geral, total_avaliacoes, melhor_funcionario, me
                   </span>
                   <Badge variant="default">Melhor</Badge>
                 </div>
-                <span className="text-muted-foreground text-sm">{melhor_funcionario.nome}</span>
+                <button
+                  type="button"
+                  className="text-muted-foreground text-sm hover:text-foreground hover:underline text-left"
+                  onClick={() => onFuncionarioClick?.(melhor_funcionario.id)}
+                >
+                  {melhor_funcionario.nome}
+                </button>
               </>
             ) : (
               <span className="font-medium text-3xl tabular-nums leading-none tracking-tight">---</span>

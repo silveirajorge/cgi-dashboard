@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react";
 
 import { AvaliacaoFilters } from "./avaliacao-filters";
 import { ComparativeChart } from "./comparative-chart";
+import { HistoricoModal } from "./historico-modal";
 import { KpiCards } from "./kpi-cards";
 
 interface StatsResponse {
@@ -44,7 +45,11 @@ export function AvaliacaoDashboardClient() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
-  const [selectedFuncionarioId, setSelectedFuncionarioId] = useState("");
+  const [selectedFuncionarioId, setSelectedFuncionarioId] = useState("all");
+  const [selectedFuncionario, setSelectedFuncionario] = useState<{
+    id: number;
+    nome: string;
+  } | null>(null);
 
   const initializedRef = useRef(false);
 
@@ -53,7 +58,7 @@ export function AvaliacaoDashboardClient() {
     setError(null);
     try {
       const params = new URLSearchParams({ from: fromVal, to: toVal });
-      if (funcionarioId) params.set("funcionario_id", funcionarioId);
+      if (funcionarioId && funcionarioId !== "all") params.set("funcionario_id", funcionarioId);
       const res = await fetch(`/api/avaliacoes/stats?${params}`);
       if (!res.ok) throw new Error("Erro ao carregar dados");
       const json: StatsResponse = await res.json();
@@ -139,6 +144,11 @@ export function AvaliacaoDashboardClient() {
     void fetchStats(from, to, id || undefined);
   }
 
+  function handleFuncionarioClick(funcionarioId: number) {
+    const f = funcionarios.find((f) => f.id === funcionarioId);
+    if (f) setSelectedFuncionario({ id: funcionarioId, nome: f.nome });
+  }
+
   // Error state
   if (error && !loading && !data) {
     return (
@@ -194,10 +204,11 @@ export function AvaliacaoDashboardClient() {
             total_avaliacoes={data.total_avaliacoes}
             melhor_funcionario={data.melhor_funcionario}
             media_categorias={data.media_categorias}
+            onFuncionarioClick={handleFuncionarioClick}
           />
 
           {/* BarChart comparativo */}
-          <ComparativeChart data={data.comparativo} />
+          <ComparativeChart data={data.comparativo} onBarClick={handleFuncionarioClick} />
         </>
       ) : meses.length === 0 && !loading ? (
         /* Empty state - nenhum dado disponível */
@@ -206,6 +217,14 @@ export function AvaliacaoDashboardClient() {
           <p className="mt-2 text-muted-foreground text-sm">Faça avaliações para ver os KPIs do grupo.</p>
         </div>
       ) : null}
+
+      {selectedFuncionario && (
+        <HistoricoModal
+          funcionarioId={selectedFuncionario.id}
+          funcionarioNome={selectedFuncionario.nome}
+          onClose={() => setSelectedFuncionario(null)}
+        />
+      )}
     </div>
   );
 }
