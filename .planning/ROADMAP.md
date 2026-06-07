@@ -13,6 +13,10 @@ Upload de CSV diário → dados armazenados com dedup → KPIs gerados automatic
 - [x] **Phase 1: Backend Foundation** — Infraestrutura de backend: SQLite, parser CSV, API routes, arquitetura em camadas (completed 2026-06-06)
 - [x] **Phase 2: Upload UI** — Interface de upload: formulário, drag & drop, validação, feedback visual (completed 2026-06-06)
 - [x] **Phase 3: KPI Dashboard** — Dashboard de KPIs: cards automáticos, gráficos, atualização pós-upload (completed 2026-06-06)
+- [ ] **Phase 4.1: Cadastro de Funcionários** — Página de gestão de funcionários com CRUD, soft delete
+- [ ] **Phase 4.2: Formulário de Avaliação** — Formulário de avaliação individual com categorias, nota e comentário
+- [ ] **Phase 4.3: Dashboard do Grupo** — KPIs do grupo de avaliação com filtros e comparativo
+- [ ] **Phase 4.4: Histórico por Funcionário** — Histórico de avaliações com gráfico de evolução e tabela
 
 ## Phase Details
 
@@ -78,6 +82,60 @@ Phase 1 (Backend Foundation)
        └── Phase 3 (KPI Dashboard)
 ```
 
+### Phase 4.1: Cadastro de Funcionários
+**Goal:** Página de gestão de funcionários com cadastro, edição e soft delete.
+**Mode:** mvp
+**Depends on:** Phase 3 (infra existente)
+**Requirements:** (a definir)
+**Success Criteria** (what must be TRUE):
+  1. Página `/dashboard/funcionarios` com tabela de funcionários (nome, ativo/inativo)
+  2. Botão "Adicionar Funcionário" com formulário (nome)
+  3. Toggle ativar/desativar (soft delete — dados mantidos na BD)
+  4. Tabela SQLite `funcionarios` com colunas: id, nome, ativo, created_at
+  5. API endpoints: GET /api/funcionarios, POST, PUT /api/funcionarios/[id], DELETE (soft)
+**Plans:** 0/0 plans pending
+
+### Phase 4.2: Formulário de Avaliação
+**Goal:** Formulário de avaliação individual com categorias de desempenho.
+**Mode:** mvp
+**Depends on:** Phase 4.1 (funcionários cadastrados)
+**Requirements:** (a definir)
+**Success Criteria** (what must be TRUE):
+  1. Página `/dashboard/avaliacao` com listagem de avaliações + botão "Nova Avaliação"
+  2. Formulário com 6 categorias (Pontualidade, Qualidade, Produtividade, Trabalho em Equipa, Iniciativa, Comunicação) — escala 1-10
+  3. Média automática das categorias + campo de comentário opcional
+  4. Salva na BD com data específica + id_funcionario
+  5. Tabela SQLite `avaliacoes`
+  6. API: GET /api/avaliacoes, POST /api/avaliacoes, GET /api/avaliacoes/[id]
+**Plans:** 0/0 plans pending
+
+### Phase 4.3: Dashboard do Grupo
+**Goal:** Dashboard de KPIs do grupo de avaliação com filtros e comparativo entre funcionários.
+**Mode:** mvp
+**Depends on:** Phase 4.2 (avaliações no banco)
+**Requirements:** (a definir)
+**Success Criteria** (what must be TRUE):
+  1. Página `/dashboard/avaliacao-dashboard` com KPIs do grupo
+  2. KPIs: média geral, média por categoria, total de avaliações, funcionário com melhor média
+  3. Gráfico comparativo entre funcionários (barras)
+  4. Filtro por período (dropdown mês + date range) e dropdown de funcionário (ou "Todos")
+  5. Apenas funcionários ativos entram nas métricas
+  6. API: GET /api/avaliacoes/stats?from=&to=&funcionario_id=
+**Plans:** 0/0 plans pending
+
+### Phase 4.4: Histórico por Funcionário
+**Goal:** Visualização do histórico completo de avaliações de cada funcionário.
+**Mode:** mvp
+**Depends on:** Phase 4.2 (avaliações no banco)
+**Requirements:** (a definir)
+**Success Criteria** (what must be TRUE):
+  1. Clique no nome do funcionário no dashboard abre o histórico
+  2. Gráfico de evolução temporal (linha) + tabela com detalhes das avaliações
+  3. Filtro por período
+  4. Apenas leitura (sem editar/apagar avaliações passadas)
+  5. API: GET /api/avaliacoes/[funcionario_id]?from=&to=
+**Plans:** 0/0 plans pending
+
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
@@ -85,6 +143,10 @@ Phase 1 (Backend Foundation)
 | 1 - Backend Foundation | 2/2 | Complete   | 2026-06-06 |
 | 2 - Upload UI | 1/1 | Complete   | 2026-06-06 |
 | 3 - KPI Dashboard | 2/2 | Complete   | 2026-06-06 |
+| 4.1 - Cadastro de Funcionários | 0/0 | Pending    | — |
+| 4.2 - Formulário de Avaliação | 0/0 | Pending    | — |
+| 4.3 - Dashboard do Grupo | 0/0 | Pending    | — |
+| 4.4 - Histórico por Funcionário | 0/0 | Pending    | — |
 
 ---
 
