@@ -200,6 +200,9 @@ Plans:
   4. Tabela da equipa com status e estrelas
   5. Detalhamento individual com Score, gráficos e comentários
   6. Dados semana a semana, com carry forward quando não há avaliações
-**Plans:** 0/0 plans pending
+**Plans:** 1/1 plans pending
 
-*Roadmap generated: 2026-06-07*
+```
+Plans:
+- [ ] 05-01-PLAN.md — Full v2: 3 API routes, 12 components, Score Final, KPIs semanais, donut, linha, tabela, detalhamento individual
+```
