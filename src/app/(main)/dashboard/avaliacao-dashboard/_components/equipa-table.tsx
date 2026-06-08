@@ -33,7 +33,7 @@ export function EquipaTable({ team, onFuncionarioClick }: EquipaTableProps) {
         <TableRow>
           <TableHead>Nome</TableHead>
           <TableHead>Atrasos/Faltas</TableHead>
-          <TableHead>Speedops</TableHead>
+          <TableHead>SpeedOps</TableHead>
           <TableHead>Erro Crítico</TableHead>
           <TableHead>Produtividade (%)</TableHead>
           <TableHead>Avaliação Auditor</TableHead>

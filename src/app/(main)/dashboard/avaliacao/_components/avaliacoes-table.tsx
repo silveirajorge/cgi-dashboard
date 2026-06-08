@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { Eye, Loader2, Plus } from "lucide-react";
+import { Eye, Loader2, Pencil, Plus } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,9 +28,10 @@ interface FuncionarioOption {
 interface AvaliacoesTableProps {
   refreshKey: number;
   onNovaAvaliacao: () => void;
+  onEditar?: (id: number) => void;
 }
 
-export function AvaliacoesTable({ refreshKey, onNovaAvaliacao }: AvaliacoesTableProps) {
+export function AvaliacoesTable({ refreshKey, onNovaAvaliacao, onEditar }: AvaliacoesTableProps) {
   const [avaliacoes, setAvaliacoes] = useState<AvaliacaoResumo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -204,6 +205,9 @@ export function AvaliacoesTable({ refreshKey, onNovaAvaliacao }: AvaliacoesTable
                         <Badge variant="default">{a.media.toFixed(2)}</Badge>
                       </TableCell>
                       <TableCell className="text-right">
+                        <Button variant="ghost" size="icon-sm" onClick={() => onEditar?.(a.id)} title="Editar">
+                          <Pencil className="size-4" />
+                        </Button>
                         <Button
                           variant="ghost"
                           size="icon-sm"

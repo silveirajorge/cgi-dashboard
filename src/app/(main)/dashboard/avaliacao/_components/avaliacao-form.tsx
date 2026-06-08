@@ -17,6 +17,7 @@ interface FuncionarioOption {
 }
 
 interface AvaliacaoFormProps {
+  editId?: number | null;
   onCancel: () => void;
   onSuccess: () => void;
 }
@@ -43,7 +44,7 @@ function getDefaultNotas(): NotasState {
   };
 }
 
-export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
+export function AvaliacaoForm({ editId, onCancel, onSuccess }: AvaliacaoFormProps) {
   const [funcionarios, setFuncionarios] = useState<FuncionarioOption[]>([]);
   const [funcionario, setFuncionario] = useState<FuncionarioOption | null>(null);
   const [dataAvaliacao, setDataAvaliacao] = useState(() => new Date().toISOString().split("T")[0]);
@@ -72,6 +73,37 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
       }
     })();
   }, []);
+
+  // Load existing data when editing
+  useEffect(() => {
+    if (!editId) return;
+    void (async () => {
+      try {
+        const res = await fetch(`/api/avaliacoes/${editId}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        setFuncionario(data.funcionario_id ? { id: data.funcionario_id, nome: data.funcionario_nome ?? "" } : null);
+        setDataAvaliacao(data.data_avaliacao ?? "");
+        setNotas({
+          pontualidade: data.pontualidade ?? 0,
+          qualidade: data.qualidade ?? 0,
+          trabalho_equipa: data.trabalho_equipa ?? 0,
+          iniciativa: data.iniciativa ?? 0,
+          comunicacao: data.comunicacao ?? 0,
+        });
+        setComentario(data.comentario ?? "");
+        setAtraso(!!data.atraso);
+        setFalta(!!data.falta);
+        setUsoFerramenta(!!data.uso_ferramenta);
+        setErroCritico(!!data.erro_critico);
+        setPercProdutividade(data.perc_produtividade ?? null);
+        setNotaAuditoria(data.nota_auditoria ?? null);
+        setTipoAuditoria(data.tipo_auditoria ?? "supervisor");
+      } catch {
+        // non-critical
+      }
+    })();
+  }, [editId]);
 
   const todasPreenchidas = Object.values(notas).every((n) => n >= 1 && n <= 10);
   const catCount = Object.keys(getDefaultNotas()).length;
@@ -111,8 +143,10 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
     setError(null);
 
     try {
-      const res = await fetch("/api/avaliacoes", {
-        method: "POST",
+      const url = editId ? `/api/avaliacoes/${editId}` : "/api/avaliacoes";
+      const method = editId ? "PUT" : "POST";
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           funcionario_id: funcionario.id,
@@ -156,7 +190,7 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
               Funcionário <span className="text-destructive">*</span>
             </Label>
             <Select
-              value={funcionario ? String(funcionario.id) : ""}
+              value={funcionario ? String(funcionario.id) : "placeholder"}
               onValueChange={(v) => {
                 const found = funcionarios.find((f) => String(f.id) === v);
                 setFuncionario(found ?? null);
@@ -243,7 +277,7 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
             {[
               { key: "atraso", label: "Atraso", checked: atraso, setter: setAtraso },
               { key: "falta", label: "Falta", checked: falta, setter: setFalta },
-              { key: "uso_ferramenta", label: "Uso de Ferramenta", checked: usoFerramenta, setter: setUsoFerramenta },
+              { key: "uso_ferramenta", label: "Uso de SpeedOps", checked: usoFerramenta, setter: setUsoFerramenta },
               { key: "erro_critico", label: "Erro Crítico", checked: erroCritico, setter: setErroCritico },
             ].map((item) => (
               <div key={item.key} className="flex items-center gap-2">

@@ -30,7 +30,7 @@ const CARDS = [
   },
   {
     key: "uso_speedops",
-    label: "Uso Speedops",
+    label: "Uso de SpeedOps",
     icon: CheckCircle2,
     format: (v: number) => `${v.toFixed(1)}%`,
   },
