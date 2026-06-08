@@ -20,16 +20,23 @@ interface ResumoCardProps {
   };
 }
 
-function medalColor(status: string): string {
+const STATUS_LABEL: Record<string, string> = {
+  excelente: "Excelente",
+  bom: "Bom",
+  atencao: "Atenção",
+  critico: "Crítico",
+};
+
+function statusBg(status: string): string {
   switch (status) {
     case "excelente":
-      return "#22c55e";
+      return "bg-[#22c55e]";
     case "bom":
-      return "#3b82f6";
+      return "bg-[#3b82f6]";
     case "atencao":
-      return "#eab308";
+      return "bg-[#eab308]";
     default:
-      return "#ef4444";
+      return "bg-[#ef4444]";
   }
 }
 
@@ -40,11 +47,17 @@ export function ResumoCard({ funcionario }: ResumoCardProps) {
         <CardTitle>{funcionario.nome}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        {/* Score Final grande com medalha */}
-        <div className="flex flex-col items-center gap-2 rounded-lg bg-muted/50 p-4">
-          <Award className="size-6" style={{ color: medalColor(funcionario.status) }} />
-          <span className="font-bold text-5xl tabular-nums leading-none tracking-tight">{funcionario.score_final}</span>
-          <ScoreBadge status={funcionario.status} />
+        {/* Score Final com fundo colorido */}
+        <div className={`flex items-center gap-5 rounded-lg ${statusBg(funcionario.status)} py-5 pr-5 pl-5`}>
+          <Award className="size-14 shrink-0 text-white/90" />
+          <div className="flex flex-col gap-0.5">
+            <span className="font-bold text-5xl tabular-nums leading-none tracking-tight text-white">
+              {funcionario.score_final}
+            </span>
+            <span className="font-medium text-base text-white/80">
+              {STATUS_LABEL[funcionario.status] ?? funcionario.status}
+            </span>
+          </div>
         </div>
 
         {/* Grid de métricas */}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
 interface CarteiraModalProps {
@@ -42,7 +42,7 @@ export function CarteiraModal({ open, mes, currentValue, onSave, onClose }: Cart
   function formatMes(mesStr: string): string {
     const [year, month] = mesStr.split("-");
     const date = new Date(Number(year), Number(month) - 1, 1);
-    return date.toLocaleDateString("pt-PT", { month: "long", year: "numeric" });
+    return date.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
   }
 
   return (
@@ -55,6 +55,7 @@ export function CarteiraModal({ open, mes, currentValue, onSave, onClose }: Cart
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Carteira de Clientes &mdash; {mes ? formatMes(mes) : "---"}</DialogTitle>
+          <DialogDescription>Atualizar o total de clientes na carteira para este mês</DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-4 py-2">

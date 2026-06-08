@@ -169,11 +169,8 @@ export function AvaliacaoDashboardClient() {
             from={from}
             to={to}
             selectedMonth={selectedMonth}
-            selectedFuncionarioId={selectedFuncionarioId}
-            funcionarios={funcionarios}
             onMonthChange={handleMonthChange}
             onPeriodChange={handlePeriodChange}
-            onFuncionarioChange={handleFuncionarioChange}
           />
         )}
         <div className="flex items-center justify-center rounded-lg border border-destructive/50 bg-destructive/5 p-8">
@@ -192,11 +189,8 @@ export function AvaliacaoDashboardClient() {
           from={from}
           to={to}
           selectedMonth={selectedMonth}
-          selectedFuncionarioId={selectedFuncionarioId}
-          funcionarios={funcionarios}
           onMonthChange={handleMonthChange}
           onPeriodChange={handlePeriodChange}
-          onFuncionarioChange={handleFuncionarioChange}
         />
       )}
 

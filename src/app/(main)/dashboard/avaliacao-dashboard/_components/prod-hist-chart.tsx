@@ -29,7 +29,7 @@ export function ProdHistChart({ data }: ProdHistChartProps) {
         <CardTitle>Histórico de Produtividade</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="aspect-auto h-80 w-full">
+        <ChartContainer config={chartConfig} className="aspect-square w-full">
           <BarChart data={data} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
             <CartesianGrid vertical={false} strokeOpacity={0.5} />
             <XAxis

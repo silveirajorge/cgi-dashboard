@@ -29,7 +29,7 @@ export function ScoreEvolChart({ data }: ScoreEvolChartProps) {
         <CardTitle>Evolução do Score</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="aspect-auto h-80 w-full">
+        <ChartContainer config={chartConfig} className="aspect-square w-full">
           <LineChart data={data} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
             <defs>
               <linearGradient id="fillScore" x1="0" y1="0" x2="0" y2="1">

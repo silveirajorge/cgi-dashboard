@@ -7,19 +7,9 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Combobox,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxList,
-  ComboboxTrigger,
-  ComboboxValue,
-} from "@/components/ui/combobox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface FuncionarioOption {
   id: number;
@@ -34,7 +24,7 @@ interface AvaliacaoFormProps {
 const CATEGORIAS = [
   { key: "pontualidade", label: "Pontualidade" },
   { key: "qualidade", label: "Qualidade" },
-  { key: "produtividade", label: "Produtividade" },
+
   { key: "trabalho_equipa", label: "Trabalho em Equipa" },
   { key: "iniciativa", label: "Iniciativa" },
   { key: "comunicacao", label: "Comunicação" },
@@ -46,7 +36,7 @@ function getDefaultNotas(): NotasState {
   return {
     pontualidade: 0,
     qualidade: 0,
-    produtividade: 0,
+
     trabalho_equipa: 0,
     iniciativa: 0,
     comunicacao: 0,
@@ -65,7 +55,7 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
   const [erroCritico, setErroCritico] = useState(false);
   const [percProdutividade, setPercProdutividade] = useState<number | null>(null);
   const [notaAuditoria, setNotaAuditoria] = useState<number | null>(null);
-  const [tipoAuditoria, setTipoAuditoria] = useState("");
+  const [tipoAuditoria, setTipoAuditoria] = useState("supervisor");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -84,7 +74,8 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
   }, []);
 
   const todasPreenchidas = Object.values(notas).every((n) => n >= 1 && n <= 10);
-  const mediaPreview = todasPreenchidas ? Object.values(notas).reduce((a, b) => a + b, 0) / 6 : null;
+  const catCount = Object.keys(getDefaultNotas()).length;
+  const mediaPreview = todasPreenchidas ? Object.values(notas).reduce((a, b) => a + b, 0) / catCount : null;
 
   async function handleSubmit() {
     if (!funcionario) {
@@ -159,30 +150,29 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-5">
-          {/* Combobox funcionário */}
+          {/* Select funcionário */}
           <div className="flex flex-col gap-1">
-            <Label>Funcionário</Label>
-            <Combobox
-              items={funcionarios}
-              itemToStringValue={(f) => f?.nome ?? ""}
-              value={funcionario}
-              onValueChange={setFuncionario}
+            <Label htmlFor="funcionario">
+              Funcionário <span className="text-destructive">*</span>
+            </Label>
+            <Select
+              value={funcionario ? String(funcionario.id) : ""}
+              onValueChange={(v) => {
+                const found = funcionarios.find((f) => String(f.id) === v);
+                setFuncionario(found ?? null);
+              }}
             >
-              <ComboboxTrigger className="w-full">
-                <ComboboxValue placeholder="Selecionar funcionário..." />
-              </ComboboxTrigger>
-              <ComboboxContent className="w-full">
-                <ComboboxInput showTrigger={false} placeholder="Buscar funcionário..." />
-                <ComboboxEmpty>Nenhum funcionário encontrado.</ComboboxEmpty>
-                <ComboboxList>
-                  {(funcionario: FuncionarioOption) => (
-                    <ComboboxItem key={funcionario.id} value={funcionario}>
-                      {funcionario.nome}
-                    </ComboboxItem>
-                  )}
-                </ComboboxList>
-              </ComboboxContent>
-            </Combobox>
+              <SelectTrigger className="w-64">
+                <SelectValue placeholder="Selecionar funcionário..." />
+              </SelectTrigger>
+              <SelectContent>
+                {funcionarios.map((func) => (
+                  <SelectItem key={func.id} value={String(func.id)}>
+                    {func.nome}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Date input */}
@@ -193,6 +183,7 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
               type="date"
               value={dataAvaliacao}
               onChange={(e) => setDataAvaliacao(e.target.value)}
+              className="w-44"
             />
           </div>
 
@@ -221,6 +212,20 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
                 />
               </div>
             ))}
+
+            {/* Produtividade (%) — no lugar da antiga produtividade 1-10 */}
+            <div className="flex flex-col gap-1">
+              <Label htmlFor="perc-produtividade">Produtividade (%)</Label>
+              <Input
+                id="perc-produtividade"
+                type="number"
+                min={0}
+                step={1}
+                value={percProdutividade ?? ""}
+                onChange={(e) => setPercProdutividade(e.target.value ? Number(e.target.value) : null)}
+                placeholder="Ex: 110"
+              />
+            </div>
           </div>
 
           {/* Média preview */}
@@ -230,8 +235,8 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
             </p>
           )}
 
-          {/* === Auditoria === */}
-          <h3 className="font-medium text-sm">Auditoria</h3>
+          {/* === Ocorrências === */}
+          <h3 className="font-medium text-sm">Ocorrências</h3>
 
           {/* Grid 2-col de checkboxes */}
           <div className="grid grid-cols-2 gap-3">
@@ -252,20 +257,11 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
             ))}
           </div>
 
+          {/* === Auditoria === */}
+          <h3 className="font-medium text-sm">Auditoria</h3>
+
           {/* Grid 2-col inputs numéricos */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="flex flex-col gap-1">
-              <Label htmlFor="perc-produtividade">Produtividade (%)</Label>
-              <Input
-                id="perc-produtividade"
-                type="number"
-                min={0}
-                step={1}
-                value={percProdutividade ?? ""}
-                onChange={(e) => setPercProdutividade(e.target.value ? Number(e.target.value) : null)}
-                placeholder="Ex: 110"
-              />
-            </div>
             <div className="flex flex-col gap-1">
               <Label htmlFor="nota-auditoria">Nota da Auditoria (0-100)</Label>
               <Input
@@ -279,21 +275,18 @@ export function AvaliacaoForm({ onCancel, onSuccess }: AvaliacaoFormProps) {
                 placeholder="0-100"
               />
             </div>
-          </div>
-
-          {/* RadioGroup tipo_auditoria */}
-          <div className="flex flex-col gap-1">
-            <Label>Tipo de Auditoria</Label>
-            <RadioGroup value={tipoAuditoria} onValueChange={setTipoAuditoria}>
-              <div className="flex items-center gap-2">
-                <RadioGroupItem value="supervisor" id="tipo-supervisor" />
-                <Label htmlFor="tipo-supervisor">Supervisor</Label>
-              </div>
-              <div className="flex items-center gap-2">
-                <RadioGroupItem value="auditor" id="tipo-auditor" />
-                <Label htmlFor="tipo-auditor">Auditor</Label>
-              </div>
-            </RadioGroup>
+            <div className="flex flex-col gap-1">
+              <Label>Tipo de Auditoria</Label>
+              <Select value={tipoAuditoria} onValueChange={setTipoAuditoria}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecionar tipo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="supervisor">Supervisor</SelectItem>
+                  <SelectItem value="auditor">Auditor</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           {/* Textarea comentário */}

@@ -67,15 +67,34 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       };
     });
 
+    const comentarios = rows
+      .filter((r) => r.comentario)
+      .map((r) => ({
+        data: r.data_avaliacao,
+        tipo: r.tipo_auditoria,
+        comentario: r.comentario,
+      }));
+
+    // Última avaliação (mais recente) para o resumo individual
+    const ultima = rows.length > 0 ? rows[rows.length - 1] : null;
+    const ultimaAvaliacao = ultima
+      ? {
+          data_avaliacao: ultima.data_avaliacao,
+          perc_produtividade: ultima.perc_produtividade,
+          nota_auditoria: ultima.nota_auditoria,
+          atraso: ultima.atraso,
+          falta: ultima.falta,
+          uso_ferramenta: ultima.uso_ferramenta,
+          erro_critico: ultima.erro_critico,
+          tipo_auditoria: ultima.tipo_auditoria,
+          score: evolution.length > 0 ? evolution[evolution.length - 1].score : 0,
+        }
+      : null;
+
     return NextResponse.json({
       evolution,
-      comentarios: rows
-        .filter((r) => r.comentario)
-        .map((r) => ({
-          data: r.data_avaliacao,
-          tipo: r.tipo_auditoria,
-          comentario: r.comentario,
-        })),
+      comentarios,
+      ultima_avaliacao: ultimaAvaliacao,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Erro interno";

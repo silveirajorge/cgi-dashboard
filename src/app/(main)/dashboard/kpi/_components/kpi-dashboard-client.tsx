@@ -33,10 +33,20 @@ function getMonthFromPeriod(_from: string, to: string): string {
   return to.substring(0, 7);
 }
 
+function getPreviousMonth(mes: string): string {
+  const [year, month] = mes.split("-").map(Number);
+  const d = new Date(year, month - 2, 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
 export function KpiDashboardClient() {
   const [data, setData] = useState<KpiDataResponse | null>(null);
   const [cilData, setCilData] = useState<CilResponse | null>(null);
   const [carteira, setCarteira] = useState<number | null>(null);
+  const [crescimentoCarteira, setCrescimentoCarteira] = useState<{
+    value: number | null;
+    label: string | null;
+  }>({ value: null, label: null });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -72,9 +82,28 @@ export function KpiDashboardClient() {
       // Fetch carteira
       const mes = getMonthFromPeriod(fromVal, toVal);
       const carteiraRes = await fetch(`/api/carteira?mes=${mes}`);
+      let currentCarteira: number | null = null;
       if (carteiraRes.ok) {
         const carteiraJson = await carteiraRes.json();
-        setCarteira(carteiraJson.total_clientes);
+        currentCarteira = carteiraJson.total_clientes;
+        setCarteira(currentCarteira);
+      }
+
+      // Fetch previous month carteira for growth
+      const prevMes = getPreviousMonth(mes);
+      const prevCarteiraRes = await fetch(`/api/carteira?mes=${prevMes}`);
+      if (prevCarteiraRes.ok && currentCarteira !== null) {
+        const prevCarteiraJson = await prevCarteiraRes.json();
+        if (prevCarteiraJson.total_clientes !== null && prevCarteiraJson.total_clientes > 0) {
+          setCrescimentoCarteira({
+            value: ((currentCarteira - prevCarteiraJson.total_clientes) / prevCarteiraJson.total_clientes) * 100,
+            label: "vs. Mês Anterior",
+          });
+        } else {
+          setCrescimentoCarteira({ value: null, label: null });
+        }
+      } else {
+        setCrescimentoCarteira({ value: null, label: null });
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro desconhecido");
@@ -128,18 +157,36 @@ export function KpiDashboardClient() {
 
         // Fetch carteira — try the displayed month first, fall back to last record
         const carteiraRes = await fetch(`/api/carteira?mes=${lastMes}`);
+        let currentCarteira: number | null = null;
         if (carteiraRes.ok) {
           const carteiraJson = await carteiraRes.json();
           if (carteiraJson.total_clientes !== null) {
-            setCarteira(carteiraJson.total_clientes);
+            currentCarteira = carteiraJson.total_clientes;
+            setCarteira(currentCarteira);
           } else {
             // Try to get the last available carteira record
             const latestRes = await fetch("/api/carteira?mes=latest");
             if (latestRes.ok) {
               const latestJson = await latestRes.json();
               if (latestJson.total_clientes !== null) {
-                setCarteira(latestJson.total_clientes);
+                currentCarteira = latestJson.total_clientes;
+                setCarteira(currentCarteira);
               }
+            }
+          }
+        }
+
+        // Fetch previous month carteira for growth
+        if (currentCarteira !== null) {
+          const prevMes = getPreviousMonth(lastMes);
+          const prevCarteiraRes = await fetch(`/api/carteira?mes=${prevMes}`);
+          if (prevCarteiraRes.ok) {
+            const prevCarteiraJson = await prevCarteiraRes.json();
+            if (prevCarteiraJson.total_clientes !== null && prevCarteiraJson.total_clientes > 0) {
+              setCrescimentoCarteira({
+                value: ((currentCarteira - prevCarteiraJson.total_clientes) / prevCarteiraJson.total_clientes) * 100,
+                label: "vs. Mês Anterior",
+              });
             }
           }
         }
@@ -190,10 +237,30 @@ export function KpiDashboardClient() {
     setCarteiraMes(null);
   }
 
-  function handleCarteiraSave(value: number) {
+  async function handleCarteiraSave(value: number) {
     setCarteira(value);
     setCarteiraModalOpen(false);
     setCarteiraMes(null);
+
+    // Recalcular crescimento da carteira
+    const currentMes = carteiraMes || getMonthFromPeriod(from, to);
+    const prevMes = getPreviousMonth(currentMes);
+    try {
+      const prevRes = await fetch(`/api/carteira?mes=${prevMes}`);
+      if (prevRes.ok) {
+        const prevJson = await prevRes.json();
+        if (prevJson.total_clientes !== null && prevJson.total_clientes > 0) {
+          setCrescimentoCarteira({
+            value: ((value - prevJson.total_clientes) / prevJson.total_clientes) * 100,
+            label: "vs. Mês Anterior",
+          });
+        } else {
+          setCrescimentoCarteira({ value: null, label: null });
+        }
+      }
+    } catch {
+      setCrescimentoCarteira({ value: null, label: null });
+    }
   }
 
   if (error) {
@@ -230,6 +297,7 @@ export function KpiDashboardClient() {
             total={data.total}
             carteira={carteira}
             crescimento={data.crescimento}
+            crescimentoCarteira={crescimentoCarteira}
             avg_daily={data.avg_daily}
             max_day={data.max_day}
             workdays={data.workdays}

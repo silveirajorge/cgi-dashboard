@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const CATEGORIAS = [
   { key: "pontualidade", label: "Pontualidade" },
   { key: "qualidade", label: "Qualidade" },
-  { key: "produtividade", label: "Produtividade" },
+
   { key: "trabalho_equipa", label: "Trabalho em Equipa" },
   { key: "iniciativa", label: "Iniciativa" },
   { key: "comunicacao", label: "Comunicação" },

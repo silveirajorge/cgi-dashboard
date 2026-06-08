@@ -29,29 +29,28 @@ function tipoBadgeClass(tipo: string): string {
 
 export function ComentariosList({ comentarios }: ComentariosListProps) {
   const sorted = [...comentarios].sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
+  const latest = sorted[0] ?? null;
 
   return (
-    <Card>
+    <Card className="flex flex-col">
       <CardHeader>
-        <CardTitle>Comentários</CardTitle>
+        <CardTitle>Último Comentário</CardTitle>
       </CardHeader>
-      <CardContent className="flex flex-col gap-3">
-        {sorted.length === 0 ? (
+      <CardContent className="flex-1">
+        {!latest ? (
           <p className="text-muted-foreground text-sm">Nenhum comentário registado.</p>
         ) : (
-          sorted.map((c, i) => (
-            <div key={i} className="flex flex-col gap-1.5 rounded-lg border p-3">
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground text-xs">{formatDateBR(c.data)}</span>
-                <span
-                  className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-medium ${tipoBadgeClass(c.tipo)}`}
-                >
-                  {c.tipo === "supervisor" ? "Supervisor" : "Auditor"}
-                </span>
-              </div>
-              <p className="text-sm leading-relaxed">{c.comentario}</p>
+          <div className="flex flex-col gap-1.5 rounded-lg border p-3">
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground text-xs">{formatDateBR(latest.data)}</span>
+              <span
+                className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-medium ${tipoBadgeClass(latest.tipo)}`}
+              >
+                {latest.tipo === "supervisor" ? "Supervisor" : "Auditor"}
+              </span>
             </div>
-          ))
+            <p className="text-sm leading-relaxed">{latest.comentario}</p>
+          </div>
         )}
       </CardContent>
     </Card>

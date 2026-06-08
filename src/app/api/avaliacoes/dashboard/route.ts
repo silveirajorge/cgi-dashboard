@@ -120,7 +120,7 @@ export async function GET(request: NextRequest) {
       { name: "Crítico", value: team.filter((t) => t.score_final < 85).length, fill: "#ef4444" },
     ];
 
-    // 5. Ferramenta uso %
+    // 5. Ferramenta uso % — por total de avaliações
     const totalAvaliacoes = db
       .prepare(
         `SELECT COUNT(*) as total FROM avaliacoes a

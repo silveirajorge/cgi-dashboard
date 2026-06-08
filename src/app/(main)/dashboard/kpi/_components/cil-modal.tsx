@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
@@ -84,11 +84,12 @@ export function CilModal({ cil, from, to, onClose }: CilModalProps) {
         if (!open) onClose();
       }}
     >
-      <DialogContent className="max-w-4xl">
+      <DialogContent className="sm:max-w-6xl max-w-6xl">
         <DialogHeader>
           <DialogTitle>
             CIL {cil} &mdash; {total} registros
           </DialogTitle>
+          <DialogDescription>Registos filtrados por CIL, período e estado</DialogDescription>
         </DialogHeader>
 
         <div className="flex items-center justify-between gap-4">
@@ -123,7 +124,7 @@ export function CilModal({ cil, from, to, onClose }: CilModalProps) {
             <Loader2 className="size-6 animate-spin text-muted-foreground" />
           </div>
         ) : (
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-[70vh] overflow-y-auto">
             <Table>
               <TableHeader>
                 <TableRow>

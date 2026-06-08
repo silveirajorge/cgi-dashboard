@@ -2,30 +2,23 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-interface Funcionario {
-  id: number;
-  nome: string;
-  ativo: number;
-  created_at: string;
-  updated_at: string;
-}
-
 interface AvaliacaoFiltersProps {
   meses: string[];
   from: string;
   to: string;
   selectedMonth: string | null;
-  selectedFuncionarioId: string;
-  funcionarios: Funcionario[];
   onMonthChange: (mes: string) => void;
   onPeriodChange: (from: string, to: string) => void;
-  onFuncionarioChange: (funcionarioId: string) => void;
 }
 
-function formatMesLabel(mes: string): string {
-  const [year, month] = mes.split("-");
-  const date = new Date(Number(year), Number(month) - 1, 1);
-  return date.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+function formatMesLabel(semana: string): string {
+  const [year, weekNum] = semana.split("-");
+  // Approximate month from week number
+  const firstDayOfYear = new Date(Number(year), 0, 1);
+  const weekStart = new Date(firstDayOfYear);
+  weekStart.setDate(firstDayOfYear.getDate() + (Number(weekNum) - 1) * 7);
+  const monthName = weekStart.toLocaleDateString("pt-BR", { month: "short" });
+  return `Sem ${weekNum} · ${monthName} ${year}`;
 }
 
 export function AvaliacaoFilters({
@@ -33,35 +26,14 @@ export function AvaliacaoFilters({
   from,
   to,
   selectedMonth,
-  selectedFuncionarioId,
-  funcionarios,
   onMonthChange,
   onPeriodChange,
-  onFuncionarioChange,
 }: AvaliacaoFiltersProps) {
   return (
     <div className="flex flex-wrap items-center gap-4">
-      {/* Funcionário dropdown */}
+      {/* Period filter (week dropdown + date range) */}
       <div className="flex items-center gap-2">
-        <span className="text-muted-foreground text-sm">Funcionário:</span>
-        <Select value={selectedFuncionarioId} onValueChange={onFuncionarioChange}>
-          <SelectTrigger className="w-52">
-            <SelectValue placeholder="Selecionar funcionário" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="">Todos</SelectItem>
-            {funcionarios.map((f) => (
-              <SelectItem key={f.id} value={String(f.id)}>
-                {f.nome}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Period filter (month dropdown + date range) */}
-      <div className="flex items-center gap-2">
-        <span className="text-muted-foreground text-sm">Mês:</span>
+        <span className="text-muted-foreground text-sm">Semana:</span>
         <Select
           value={selectedMonth ?? "custom"}
           onValueChange={(value) => {
@@ -69,7 +41,7 @@ export function AvaliacaoFilters({
           }}
         >
           <SelectTrigger className="w-52">
-            <SelectValue placeholder="Selecionar mês" />
+            <SelectValue placeholder="Selecionar semana" />
           </SelectTrigger>
           <SelectContent>
             {meses.map((mes) => (

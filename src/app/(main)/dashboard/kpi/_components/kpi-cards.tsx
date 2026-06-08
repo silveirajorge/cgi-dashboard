@@ -9,6 +9,7 @@ interface KpiCardsProps {
   total: number;
   carteira: number | null;
   crescimento: { value: number | null; label: string | null };
+  crescimentoCarteira: { value: number | null; label: string | null };
   avg_daily: number;
   max_day: { date: string; count: number } | null;
   workdays: number;
@@ -16,18 +17,19 @@ interface KpiCardsProps {
 }
 
 function formatNumber(value: number): string {
-  return new Intl.NumberFormat("pt-PT").format(Math.round(value));
+  return new Intl.NumberFormat("pt-BR").format(Math.round(value));
 }
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
-  return date.toLocaleDateString("pt-PT", { day: "numeric", month: "short" });
+  return date.toLocaleDateString("pt-BR", { day: "numeric", month: "short" });
 }
 
 export function KpiCards({
   total,
   carteira,
   crescimento,
+  crescimentoCarteira,
   avg_daily,
   max_day,
   workdays,
@@ -78,12 +80,12 @@ export function KpiCards({
         </CardContent>
       </Card>
 
-      {/* Crescimento Líquido */}
+      {/* Crescimento Líquido (Carteira) */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <div className="flex size-7 items-center justify-center rounded-lg border bg-muted text-muted-foreground">
-              {crescimento.value !== null && crescimento.value >= 0 ? (
+              {crescimentoCarteira.value !== null && crescimentoCarteira.value >= 0 ? (
                 <TrendingUp className="size-4" />
               ) : (
                 <TrendingDown className="size-4" />
@@ -91,16 +93,17 @@ export function KpiCards({
             </div>
             Crescimento Líquido
           </CardTitle>
+          <CardDescription>Carteira de Clientes</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-medium text-3xl tabular-nums leading-none tracking-tight">
-              {crescimento.value !== null
-                ? `${crescimento.value >= 0 ? "+" : ""}${crescimento.value.toFixed(1)}%`
+              {crescimentoCarteira.value !== null
+                ? `${crescimentoCarteira.value >= 0 ? "+" : ""}${crescimentoCarteira.value.toFixed(1)}%`
                 : "---"}
             </span>
           </div>
-          {crescimento.label && <CardDescription>{crescimento.label}</CardDescription>}
+          {crescimentoCarteira.label && <CardDescription>{crescimentoCarteira.label}</CardDescription>}
         </CardContent>
       </Card>
 

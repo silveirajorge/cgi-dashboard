@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Avaliação v2 - Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          border: 'hsl(240 5.9% 90%)',
+          background: 'hsl(0 0% 100%)',
+          foreground: 'hsl(240 10% 3.9%)',
+          card: 'hsl(0 0% 100%)',
+          'card-foreground': 'hsl(240 10% 3.9%)',
+          primary: 'hsl(346 77% 49%)',
+          muted: 'hsl(240 4.8% 95.9%)',
+          'muted-foreground': 'hsl(240 3.8% 46.1%)',
+        }
+      }
+    }
+  }
+</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: #0c0c0f; color: #fafafa; }
+  .dark body { background: #0c0c0f; color: #fafafa; }
+  .bg-dark-card { background: #1a1a1e; }
+  .bg-dark-hover { background: #252529; }
+  .border-dark { border-color: #2a2a2e; }
+  .text-accent { color: #e11d48; }
+  .bg-accent { background: #e11d48; }
+  
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
+</style>
+</head>
+<body class="dark">
+
+<!-- ====== SIDEBAR ====== -->
+<aside style="position:fixed;left:0;top:0;bottom:0;width:240px;background:#121216;border-right:1px solid #2a2a2e;z-index:50;display:flex;flex-direction:column;padding:0;overflow:hidden;">
+  <!-- Logo -->
+  <div style="padding:16px;border-bottom:1px solid #2a2a2e;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div style="width:24px;height:24px;background:#e11d48;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:700;">CG</div>
+      <span style="font-weight:600;font-size:14px;">CGI</span>
+    </div>
+  </div>
+
+  <!-- Nav Groups -->
+  <div style="padding:12px 8px;flex:1;overflow-y:auto;">
+    <!-- Group 1 -->
+    <div style="margin-bottom:16px;">
+      <div style="padding:4px 12px;font-size:11px;font-weight:500;color:#71717a;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Pedidos e Tendências</div>
+      <a style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;color:#a1a1aa;font-size:13px;text-decoration:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;color:#a1a1aa;font-size:13px;text-decoration:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <span>Upload CSV</span>
+      </a>
+    </div>
+
+    <!-- Group 2 - Active -->
+    <div>
+      <div style="padding:4px 12px;font-size:11px;font-weight:500;color:#71717a;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Avaliação e Desempenho</div>
+      <a style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;background:#e11d4815;color:#e11d48;font-size:13px;font-weight:500;text-decoration:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;color:#a1a1aa;font-size:13px;text-decoration:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg>
+        <span>Avaliação</span>
+      </a>
+      <a style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;color:#a1a1aa;font-size:13px;text-decoration:none;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Funcionários</span>
+      </a>
+    </div>
+  </div>
+</aside>
+
+<!-- ====== HEADER ====== -->
+<header style="position:fixed;left:240px;right:0;top:0;height:48px;background:#121216;border-bottom:1px solid #2a2a2e;display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:40;">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    <div style="width:1px;height:16px;background:#2a2a2e;"></div>
+    <div style="display:flex;align-items:center;gap:8px;background:#1a1a1e;border:1px solid #2a2a2e;border-radius:8px;padding:4px 12px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#71717a" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span style="color:#52525b;font-size:13px;">Buscar...</span>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div style="width:32px;height:32px;border-radius:8px;border:1px solid #2a2a2e;display:flex;align-items:center;justify-content:center;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </div>
+    <div style="width:32px;height:32px;border-radius:8px;border:1px solid #2a2a2e;display:flex;align-items:center;justify-content:center;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </div>
+    <img src="/images/logo-cgi.png" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid #2a2a2e;" alt="Logo">
+  </div>
+</header>
+
+<!-- ====== MAIN CONTENT ====== -->
+<main style="margin-left:240px;margin-top:48px;padding:24px;min-height:calc(100vh - 48px);">
+
+  <!-- Page Title + Filters -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+    <h1 style="font-size:24px;font-weight:600;">Dashboard | Avaliação e Desempenho</h1>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <select style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:8px;padding:6px 12px;color:#fafafa;font-size:13px;">
+        <option>Maio de 2026</option>
+        <option>Abril de 2026</option>
+        <option>Março de 2026</option>
+      </select>
+      <span style="color:#71717a;font-size:13px;">De:</span>
+      <input type="date" value="2026-05-01" style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:8px;padding:6px 12px;color:#fafafa;font-size:13px;width:140px;">
+      <span style="color:#71717a;font-size:13px;">Até:</span>
+      <input type="date" value="2026-05-31" style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:8px;padding:6px 12px;color:#fafafa;font-size:13px;width:140px;">
+    </div>
+  </div>
+
+  <!-- TWO-COLUMN LAYOUT -->
+  <div style="display:grid;grid-template-columns:65% 35%;gap:20px;">
+
+    <!-- ============ LEFT COLUMN ============ -->
+    <div style="display:flex;flex-direction:column;gap:20px;">
+
+      <!-- 6 KPI Cards -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        
+        <!-- Card 1: Produtividade -->
+        <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;border-left:3px solid #22c55e;">
+          <div style="color:#71717a;font-size:12px;margin-bottom:4px;">Produtividade Média</div>
+          <div style="font-size:28px;font-weight:700;">96%</div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:4px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#22c55e" stroke="none"><polyline points="18 15 12 9 6 15"/></svg>
+            <span style="color:#22c55e;font-size:12px;font-weight:500;">+2.5%</span>
+            <span style="color:#71717a;font-size:11px;">vs. semana anterior</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Speedops -->
+        <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;border-left:3px solid #3b82f6;">
+          <div style="color:#71717a;font-size:12px;margin-bottom:4px;">Uso Speedops</div>
+          <div style="font-size:28px;font-weight:700;">94%</div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:4px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#22c55e" stroke="none"><polyline points="18 15 12 9 6 15"/></svg>
+            <span style="color:#22c55e;font-size:12px;font-weight:500;">+1.2%</span>
+            <span style="color:#71717a;font-size:11px;">vs. semana anterior</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Erros -->
+        <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;border-left:3px solid #ef4444;">
+          <div style="color:#71717a;font-size:12px;margin-bottom:4px;">Erros Críticos</div>
+          <div style="font-size:28px;font-weight:700;">3</div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:4px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#ef4444" stroke="none"><polyline points="6 9 12 15 18 9"/></svg>
+            <span style="color:#ef4444;font-size:12px;font-weight:500;">+1</span>
+            <span style="color:#71717a;font-size:11px;">vs. semana anterior</span>
+          </div>
+        </div>
+
+        <!-- Card 4: Atrasos -->
+        <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;border-left:3px solid #ef4444;">
+          <div style="color:#71717a;font-size:12px;margin-bottom:4px;">Atrasos / Faltas</div>
+          <div style="font-size:28px;font-weight:700;">5</div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:4px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#ef4444" stroke="none"><polyline points="6 9 12 15 18 9"/></svg>
+            <span style="color:#ef4444;font-size:12px;font-weight:500;">+2</span>
+            <span style="color:#71717a;font-size:11px;">vs. semana anterior</span>
+          </div>
+        </div>
+
+        <!-- Card 5: Média Auditor -->
+        <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;border-left:3px solid #22c55e;">
+          <div style="color:#71717a;font-size:12px;margin-bottom:4px;">Média Auditor</div>
+          <div style="font-size:28px;font-weight:700;display:flex;align-items:center;gap:6px;">
+            4.8
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#eab308" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:4px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#22c55e" stroke="none"><polyline points="18 15 12 9 6 15"/></svg>
+            <span style="color:#22c55e;font-size:12px;font-weight:500;">+0.3</span>
+            <span style="color:#71717a;font-size:11px;">vs. semana anterior</span>
+          </div>
+        </div>
+
+        <!-- Card 6: Média Supervisor -->
+        <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;border-left:3px solid #71717a;">
+          <div style="color:#71717a;font-size:12px;margin-bottom:4px;">Média Supervisor</div>
+          <div style="font-size:28px;font-weight:700;display:flex;align-items:center;gap:6px;">
+            4.7
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#eab308" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:4px;">
+            <span style="color:#71717a;font-size:12px;font-weight:500;">0.0</span>
+            <span style="color:#71717a;font-size:11px;">vs. semana anterior</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Donut + Tool Usage -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        
+        <!-- Donut -->
+        <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;">
+          <div style="font-size:14px;font-weight:600;margin-bottom:12px;">Distribuição de Desempenho</div>
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <!-- Donut visual (simulated) -->
+            <div style="width:140px;height:140px;border-radius:50%;background:conic-gradient(#22c55e 0deg 90deg, #3b82f6 90deg 234deg, #eab308 234deg 324deg, #ef4444 324deg 360deg);position:relative;">
+              <div style="position:absolute;inset:30px;border-radius:50%;background:#1a1a1e;display:flex;align-items:center;justify-content:center;font-size:13px;color:#71717a;">Total</div>
+            </div>
+            <!-- Legend -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;width:100%;">
+              <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#22c55e;"></div><span style="font-size:12px;">Excelente 25%</span></div>
+              <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#3b82f6;"></div><span style="font-size:12px;">Bom 40%</span></div>
+              <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#eab308;"></div><span style="font-size:12px;">Atenção 25%</span></div>
+              <div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:2px;background:#ef4444;"></div><span style="font-size:12px;">Crítico 10%</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tool Usage Bar -->
+        <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;">
+          <div style="font-size:14px;font-weight:600;margin-bottom:12px;">Uso da Ferramenta</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="height:32px;border-radius:8px;background:#2a2a2e;overflow:hidden;display:flex;">
+              <div style="width:94%;background:#60a5fa;display:flex;align-items:center;padding-left:8px;font-size:12px;font-weight:500;color:white;">94%</div>
+              <div style="width:6%;background:#ef4444;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:white;">6%</div>
+            </div>
+            <div style="display:flex;gap:16px;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <div style="width:12px;height:12px;border-radius:3px;background:#60a5fa;"></div>
+                <span style="font-size:12px;">Utilizou: <strong>94%</strong> (30)</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <div style="width:12px;height:12px;border-radius:3px;background:#ef4444;"></div>
+                <span style="font-size:12px;">Não utilizou: <strong>6%</strong> (2)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evolution Chart -->
+      <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;">
+        <div style="font-size:14px;font-weight:600;margin-bottom:12px;">Evolução Média de Produtividade</div>
+        <div style="height:160px;display:flex;align-items:flex-end;gap:6px;padding:0 8px;">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div style="width:100%;height:90px;background:linear-gradient(to top, #e11d4830, #e11d4810);border-radius:4px 4px 0 0;position:relative;">
+              <div style="position:absolute;bottom:0;width:100%;height:60%;background:#e11d48;border-radius:4px 4px 0 0;opacity:0.8;"></div>
+            </div>
+            <span style="font-size:10px;color:#71717a;">S1</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div style="width:100%;height:90px;background:linear-gradient(to top, #e11d4830, #e11d4810);border-radius:4px 4px 0 0;">
+              <div style="position:absolute;bottom:0;width:100%;height:75%;background:#e11d48;border-radius:4px 4px 0 0;opacity:0.8;"></div>
+            </div>
+            <span style="font-size:10px;color:#71717a;">S2</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div style="width:100%;height:90px;background:linear-gradient(to top, #e11d4830, #e11d4810);border-radius:4px 4px 0 0;">
+              <div style="position:absolute;bottom:0;width:100%;height:70%;background:#e11d48;border-radius:4px 4px 0 0;opacity:0.8;"></div>
+            </div>
+            <span style="font-size:10px;color:#71717a;">S3</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div style="width:100%;height:90px;background:linear-gradient(to top, #e11d4830, #e11d4810);border-radius:4px 4px 0 0;">
+              <div style="position:absolute;bottom:0;width:100%;height:85%;background:#e11d48;border-radius:4px 4px 0 0;opacity:0.8;"></div>
+            </div>
+            <span style="font-size:10px;color:#71717a;">S4</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+            <div style="width:100%;height:90px;background:linear-gradient(to top, #e11d4830, #e11d4810);border-radius:4px 4px 0 0;">
+              <div style="position:absolute;bottom:0;width:100%;height:96%;background:#e11d48;border-radius:4px 4px 0 0;opacity:0.8;"></div>
+            </div>
+            <span style="font-size:10px;color:#71717a;">S5</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Table -->
+      <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;overflow-x:auto;">
+        <div style="font-size:14px;font-weight:600;margin-bottom:12px;">Equipa — Avaliações</div>
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead>
+            <tr style="border-bottom:1px solid #2a2a2e;">
+              <th style="text-align:left;padding:8px 6px;color:#71717a;font-weight:500;">Nome</th>
+              <th style="text-align:center;padding:8px 6px;color:#71717a;font-weight:500;">Atrasos/<br>Faltas</th>
+              <th style="text-align:center;padding:8px 6px;color:#71717a;font-weight:500;">Speedops</th>
+              <th style="text-align:center;padding:8px 6px;color:#71717a;font-weight:500;">Erro<br>Crítico</th>
+              <th style="text-align:center;padding:8px 6px;color:#71717a;font-weight:500;">Produt.<br>(%)</th>
+              <th style="text-align:center;padding:8px 6px;color:#71717a;font-weight:500;">Auditor<br>★</th>
+              <th style="text-align:center;padding:8px 6px;color:#71717a;font-weight:500;">Supervisor<br>★</th>
+              <th style="text-align:center;padding:8px 6px;color:#71717a;font-weight:500;">Score</th>
+              <th style="text-align:center;padding:8px 6px;color:#71717a;font-weight:500;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid #2a2a2e;">
+              <td style="padding:10px 6px;font-weight:500;">Ana Silva</td>
+              <td style="padding:10px 6px;text-align:center;">0</td>
+              <td style="padding:10px 6px;text-align:center;color:#22c55e;">Sim</td>
+              <td style="padding:10px 6px;text-align:center;color:#22c55e;">Não</td>
+              <td style="padding:10px 6px;text-align:center;">98%</td>
+              <td style="padding:10px 6px;text-align:center;">4.9 <span style="color:#eab308;">★★★★★</span></td>
+              <td style="padding:10px 6px;text-align:center;">4.8 <span style="color:#eab308;">★★★★★</span></td>
+              <td style="padding:10px 6px;text-align:center;font-weight:600;">97</td>
+              <td style="padding:10px 6px;text-align:center;"><span style="background:#22c55e20;color:#22c55e;padding:2px 8px;border-radius:4px;font-size:11px;">Excelente</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid #2a2a2e;">
+              <td style="padding:10px 6px;font-weight:500;">Carlos Santos</td>
+              <td style="padding:10px 6px;text-align:center;">1</td>
+              <td style="padding:10px 6px;text-align:center;color:#22c55e;">Sim</td>
+              <td style="padding:10px 6px;text-align:center;color:#22c55e;">Não</td>
+              <td style="padding:10px 6px;text-align:center;">92%</td>
+              <td style="padding:10px 6px;text-align:center;">4.5 <span style="color:#eab308;">★★★★☆</span></td>
+              <td style="padding:10px 6px;text-align:center;">4.6 <span style="color:#eab308;">★★★★☆</span></td>
+              <td style="padding:10px 6px;text-align:center;font-weight:600;">92</td>
+              <td style="padding:10px 6px;text-align:center;"><span style="background:#3b82f620;color:#3b82f6;padding:2px 8px;border-radius:4px;font-size:11px;">Bom</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid #2a2a2e;">
+              <td style="padding:10px 6px;font-weight:500;">Marina Oliveira</td>
+              <td style="padding:10px 6px;text-align:center;">2</td>
+              <td style="padding:10px 6px;text-align:center;color:#ef4444;">Não</td>
+              <td style="padding:10px 6px;text-align:center;color:#ef4444;">Sim</td>
+              <td style="padding:10px 6px;text-align:center;">87%</td>
+              <td style="padding:10px 6px;text-align:center;">4.2 <span style="color:#eab308;">★★★★☆</span></td>
+              <td style="padding:10px 6px;text-align:center;">4.0 <span style="color:#eab308;">★★★★☆</span></td>
+              <td style="padding:10px 6px;text-align:center;font-weight:600;">87</td>
+              <td style="padding:10px 6px;text-align:center;"><span style="background:#eab30820;color:#eab308;padding:2px 8px;border-radius:4px;font-size:11px;">Atenção</span></td>
+            </tr>
+            <tr>
+              <td style="padding:10px 6px;font-weight:500;">Pedro Costa</td>
+              <td style="padding:10px 6px;text-align:center;">3</td>
+              <td style="padding:10px 6px;text-align:center;color:#22c55e;">Sim</td>
+              <td style="padding:10px 6px;text-align:center;color:#ef4444;">Sim</td>
+              <td style="padding:10px 6px;text-align:center;">78%</td>
+              <td style="padding:10px 6px;text-align:center;">3.8 <span style="color:#eab308;">★★★☆☆</span></td>
+              <td style="padding:10px 6px;text-align:center;">3.5 <span style="color:#eab308;">★★★☆☆</span></td>
+              <td style="padding:10px 6px;text-align:center;font-weight:600;">72</td>
+              <td style="padding:10px 6px;text-align:center;"><span style="background:#ef444420;color:#ef4444;padding:2px 8px;border-radius:4px;font-size:11px;">Crítico</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ RIGHT COLUMN ============ -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <!-- Detail Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <h2 style="font-size:16px;font-weight:600;">Detalhamento Individual</h2>
+        <select style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:8px;padding:4px 10px;color:#fafafa;font-size:13px;width:160px;">
+          <option>Ana Silva</option>
+          <option>Carlos Santos</option>
+          <option>Marina Oliveira</option>
+          <option>Pedro Costa</option>
+        </select>
+      </div>
+
+      <!-- Resume Card -->
+      <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:20px;border-top:3px solid #22c55e;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,#22c55e,#16a34a);display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:20px;font-weight:700;color:white;">97</span>
+          </div>
+          <div>
+            <div style="font-size:18px;font-weight:600;">Ana Silva</div>
+            <span style="background:#22c55e20;color:#22c55e;padding:2px 8px;border-radius:4px;font-size:11px;">Excelente</span>
+            <span style="color:#eab308;font-size:12px;margin-left:6px;">🏆</span>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;">
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #2a2a2e;">
+            <span style="color:#71717a;">Atrasos / Faltas</span>
+            <span style="font-weight:500;">0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #2a2a2e;">
+            <span style="color:#71717a;">Speedops</span>
+            <span style="color:#22c55e;font-weight:500;">Sim</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #2a2a2e;">
+            <span style="color:#71717a;">Erro Crítico</span>
+            <span style="color:#22c55e;font-weight:500;">Não</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #2a2a2e;">
+            <span style="color:#71717a;">Produtividade</span>
+            <span style="font-weight:500;">96%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #2a2a2e;">
+            <span style="color:#71717a;">Auditor</span>
+            <span style="font-weight:500;">4.8 ★★★★★</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;">
+            <span style="color:#71717a;">Supervisor</span>
+            <span style="font-weight:500;">4.7 ★★★★☆</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Score Evolution -->
+      <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px;">Evolução do Score</div>
+        <div style="height:120px;display:flex;align-items:flex-end;gap:6px;">
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+            <div style="width:100%;height:40px;background:#e11d48;border-radius:4px 4px 0 0;opacity:0.6;"></div>
+            <span style="font-size:10px;color:#71717a;margin-top:4px;">S1</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+            <div style="width:100%;height:65px;background:#e11d48;border-radius:4px 4px 0 0;opacity:0.7;"></div>
+            <span style="font-size:10px;color:#71717a;margin-top:4px;">S2</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+            <div style="width:100%;height:80px;background:#e11d48;border-radius:4px 4px 0 0;opacity:0.8;"></div>
+            <span style="font-size:10px;color:#71717a;margin-top:4px;">S3</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+            <div style="width:100%;height:90px;background:#e11d48;border-radius:4px 4px 0 0;opacity:0.9;"></div>
+            <span style="font-size:10px;color:#71717a;margin-top:4px;">S4</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
+            <div style="width:100%;height:97px;background:#e11d48;border-radius:4px 4px 0 0;"></div>
+            <span style="font-size:10px;color:#71717a;margin-top:4px;">S5</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Productivity History -->
+      <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px;">Histórico de Produtividade</div>
+        <div style="height:100px;display:flex;align-items:flex-end;gap:4px;">
+          <div style="flex:1;height:55%;background:#3b82f6;border-radius:4px 4px 0 0;"></div>
+          <div style="flex:1;height:70%;background:#3b82f6;border-radius:4px 4px 0 0;"></div>
+          <div style="flex:1;height:65%;background:#3b82f6;border-radius:4px 4px 0 0;"></div>
+          <div style="flex:1;height:80%;background:#3b82f6;border-radius:4px 4px 0 0;"></div>
+          <div style="flex:1;height:96%;background:#3b82f6;border-radius:4px 4px 0 0;"></div>
+        </div>
+      </div>
+
+      <!-- Comments -->
+      <div style="background:#1a1a1e;border:1px solid #2a2a2e;border-radius:12px;padding:16px;">
+        <div style="font-size:13px;font-weight:600;margin-bottom:12px;">Comentários</div>
+        <div style="display:flex;flex-direction:column;gap:8px;max-height:200px;overflow-y:auto;">
+          <div style="background:#252529;border-radius:8px;padding:10px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:12px;font-weight:500;">Auditor</span>
+              <span style="font-size:11px;color:#71717a;">07/06/2026</span>
+            </div>
+            <p style="font-size:12px;color:#a1a1aa;">Excelente desempenho este mês. Pontualidade e qualidade excecionais.</p>
+          </div>
+          <div style="background:#252529;border-radius:8px;padding:10px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:12px;font-weight:500;">Supervisor</span>
+              <span style="font-size:11px;color:#71717a;">31/05/2026</span>
+            </div>
+            <p style="font-size:12px;color:#a1a1aa;">Boa evolução na produtividade. Manter o ritmo.</p>
+          </div>
+          <div style="background:#252529;border-radius:8px;padding:10px;">
+            <div style="display:justify-content:space-between;margin-bottom:4px;">
+              <span style="font-size:12px;font-weight:500;">Auditor</span>
+              <span style="font-size:11px;color:#71717a;">24/05/2026</span>
+            </div>
+            <p style="font-size:12px;color:#a1a1aa;">Ótimo atendimento ao cliente. Resolveu todas as questões com profissionalismo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

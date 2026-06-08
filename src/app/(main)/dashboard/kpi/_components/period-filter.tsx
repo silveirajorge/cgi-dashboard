@@ -14,7 +14,7 @@ interface PeriodFilterProps {
 function formatMesLabel(mes: string): string {
   const [year, month] = mes.split("-");
   const date = new Date(Number(year), Number(month) - 1, 1);
-  return date.toLocaleDateString("pt-PT", { month: "long", year: "numeric" });
+  return date.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
 }
 
 export function PeriodFilter({ meses, from, to, selectedMonth, onMonthChange, onPeriodChange }: PeriodFilterProps) {

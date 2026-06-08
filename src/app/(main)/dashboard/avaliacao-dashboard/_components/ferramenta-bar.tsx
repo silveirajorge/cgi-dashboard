@@ -13,7 +13,7 @@ export function FerramentaBar({ utilizouPct, naoUtilizouPct, utilizouCount, naoU
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Uso da Ferramenta</CardTitle>
+        <CardTitle>Uso do SpeedOps</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         <div className="flex h-8 overflow-hidden rounded-lg bg-muted">

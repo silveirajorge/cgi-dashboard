@@ -22,14 +22,14 @@ export function TipologySection({ tipologiasPorCanal }: TipologySectionProps) {
           return (
             <Card key={canal}>
               <CardHeader>
-                <CardTitle className="text-sm">{canal}</CardTitle>
+                <CardTitle className="text-base">{canal}</CardTitle>
               </CardHeader>
               <CardContent>
                 {tipologias.length > 0 ? (
                   <ol className="space-y-1">
                     {tipologias.map((t, i) => (
-                      <li key={t.justificacao} className="flex items-start gap-1 text-xs">
-                        <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-[10px] text-muted-foreground">
+                      <li key={t.justificacao} className="flex items-start gap-1 text-sm">
+                        <span className="mt-px flex size-5 shrink-0 items-center justify-center rounded-full bg-muted font-medium text-muted-foreground text-xs">
                           {i + 1}
                         </span>
                         <span className="text-muted-foreground">{t.justificacao}</span>
@@ -38,7 +38,7 @@ export function TipologySection({ tipologiasPorCanal }: TipologySectionProps) {
                     ))}
                   </ol>
                 ) : (
-                  <p className="text-muted-foreground text-xs">Sem dados</p>
+                  <p className="text-muted-foreground text-sm">Sem dados</p>
                 )}
               </CardContent>
             </Card>

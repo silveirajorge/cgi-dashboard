@@ -13,7 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 const CATEGORIAS = [
   { key: "pontualidade", label: "Pontualidade" },
   { key: "qualidade", label: "Qualidade" },
-  { key: "produtividade", label: "Produtividade" },
+
   { key: "trabalho_equipa", label: "Trabalho em Equipa" },
   { key: "iniciativa", label: "Iniciativa" },
   { key: "comunicacao", label: "Comunicação" },
@@ -24,7 +24,6 @@ interface AvaliacaoRecord {
   data_avaliacao: string;
   pontualidade: number;
   qualidade: number;
-  produtividade: number;
   trabalho_equipa: number;
   iniciativa: number;
   comunicacao: number;

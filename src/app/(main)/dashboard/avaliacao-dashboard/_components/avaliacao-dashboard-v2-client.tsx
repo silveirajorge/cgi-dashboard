@@ -89,6 +89,17 @@ interface HistoricoResponse {
     tipo: string;
     comentario: string;
   }>;
+  ultima_avaliacao: {
+    data_avaliacao: string;
+    perc_produtividade: number | null;
+    nota_auditoria: number | null;
+    atraso: number;
+    falta: number;
+    uso_ferramenta: number;
+    erro_critico: number;
+    tipo_auditoria: string;
+    score: number;
+  } | null;
 }
 
 function generateWeekRange(fromVal: string, toVal: string): string[] {
@@ -159,11 +170,17 @@ export function AvaliacaoDashboardV2Client() {
         ...json,
         comparativo_semanal: filled as DashboardResponse["comparativo_semanal"],
       });
+      // Auto-select first funcionário
+      if (json.team.length > 0 && selectedFuncionarioDetalhe === null) {
+        const firstId = json.team[0].id;
+        setSelectedFuncionarioDetalhe(firstId);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erro desconhecido");
     } finally {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchDetalhe = useCallback(
@@ -243,6 +260,13 @@ export function AvaliacaoDashboardV2Client() {
     void initializeData();
   }, [fetchDashboard]);
 
+  // Auto-fetch detalhe when funcionário is selected
+  useEffect(() => {
+    if (selectedFuncionarioDetalhe !== null && from && to) {
+      void fetchDetalhe(selectedFuncionarioDetalhe);
+    }
+  }, [selectedFuncionarioDetalhe, from, to, fetchDetalhe]);
+
   function handlePeriodChange(fromVal: string, toVal: string) {
     setFrom(fromVal);
     setTo(toVal);
@@ -254,8 +278,23 @@ export function AvaliacaoDashboardV2Client() {
     setSelectedFuncionarioId(id);
   }
 
-  function noopMonth() {
-    // Month-based filtering not needed in v2 — uses period range
+  function handleWeekChange(semana: string) {
+    const [year, weekNum] = semana.split("-");
+    const firstDayOfYear = new Date(Number(year), 0, 1);
+    const days = (Number(weekNum) - 1) * 7;
+    const weekStart = new Date(firstDayOfYear);
+    weekStart.setDate(firstDayOfYear.getDate() + days);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+    // Include previous week so semana_anterior is always available
+    const fromDate = new Date(weekStart);
+    fromDate.setDate(fromDate.getDate() - 7);
+    const fromStr = fromDate.toISOString().split("T")[0];
+    const toStr = weekEnd.toISOString().split("T")[0];
+    setSelectedMonth(semana);
+    setFrom(fromStr);
+    setTo(toStr);
+    void fetchDashboard(fromStr, toStr);
   }
 
   function handleFuncionarioSelect(id: number) {
@@ -273,11 +312,8 @@ export function AvaliacaoDashboardV2Client() {
             from={from}
             to={to}
             selectedMonth={selectedMonth}
-            selectedFuncionarioId={selectedFuncionarioId}
-            funcionarios={funcionarios}
-            onMonthChange={noopMonth}
+            onMonthChange={handleWeekChange}
             onPeriodChange={handlePeriodChange}
-            onFuncionarioChange={handleFuncionarioChange}
           />
         )}
         <div className="flex items-center justify-center rounded-lg border border-destructive/50 bg-destructive/5 p-8">
@@ -296,11 +332,8 @@ export function AvaliacaoDashboardV2Client() {
           from={from}
           to={to}
           selectedMonth={selectedMonth}
-          selectedFuncionarioId={selectedFuncionarioId}
-          funcionarios={funcionarios}
-          onMonthChange={noopMonth}
+          onMonthChange={handleWeekChange}
           onPeriodChange={handlePeriodChange}
-          onFuncionarioChange={handleFuncionarioChange}
         />
       )}
 
@@ -311,39 +344,39 @@ export function AvaliacaoDashboardV2Client() {
           <span className="ml-2 text-muted-foreground">Carregando dados...</span>
         </div>
       ) : data ? (
-        /* Two-column layout (65/35) */
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[65%_35%]">
-          {/* LEFT COLUMN (65%) */}
+        /* Two-column layout */
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[80%_20%]">
+          {/* LEFT COLUMN */}
           <div className="flex flex-col gap-6">
             {/* 6 KPI cards with trend indicator */}
             <KpiCardsV2 semanaAtual={data.semana_atual} semanaAnterior={data.semana_anterior} />
 
-            {/* Distribuição de Desempenho (donut chart) */}
-            <DistribuicaoDonut data={data.distribuicao} total={data.team.length} />
-
-            {/* Uso da Ferramenta (horizontal bar) */}
-            <FerramentaBar
-              utilizouPct={data.uso_ferramenta.utilizou_pct}
-              naoUtilizouPct={data.uso_ferramenta.nao_utilizou_pct}
-              utilizouCount={data.uso_ferramenta.utilizou_count}
-              naoUtilizouCount={data.uso_ferramenta.nao_utilizou_count}
-            />
+            {/* Donut + Barra lado a lado */}
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <DistribuicaoDonut data={data.distribuicao} total={data.team.length} />
+              <FerramentaBar
+                utilizouPct={data.uso_ferramenta.utilizou_pct}
+                naoUtilizouPct={data.uso_ferramenta.nao_utilizou_pct}
+                utilizouCount={data.uso_ferramenta.utilizou_count}
+                naoUtilizouCount={data.uso_ferramenta.nao_utilizou_count}
+              />
+            </div>
 
             {/* Evolução Média de Produtividade (line chart) */}
             <EvolucaoProdChart data={data.comparativo_semanal} />
 
             {/* Equipa table */}
-            <Card>
+            <Card className="flex flex-1 flex-col">
               <CardHeader>
                 <CardTitle>Equipa</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 <EquipaTable team={data.team} onFuncionarioClick={handleFuncionarioSelect} />
               </CardContent>
             </Card>
           </div>
 
-          {/* RIGHT COLUMN (35%) */}
+          {/* RIGHT COLUMN */}
           <div className="flex flex-col gap-6">
             <FuncionarioSelect
               funcionarios={data.team.map((t) => ({ id: t.id, nome: t.nome }))}

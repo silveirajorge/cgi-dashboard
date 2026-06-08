@@ -1,4 +1,4 @@
-import { BarChart3, LineChart, type LucideIcon, Upload, Users } from "lucide-react";
+import { BarChart3, ClipboardCheck, type LucideIcon, Upload, Users } from "lucide-react";
 
 export interface NavSubItem {
   title: string;
@@ -49,12 +49,12 @@ export const sidebarItems: NavGroup[] = [
       {
         title: "Dashboard",
         url: "/dashboard/avaliacao-dashboard",
-        icon: LineChart,
+        icon: BarChart3,
       },
       {
         title: "Avaliação",
         url: "/dashboard/avaliacao",
-        icon: LineChart,
+        icon: ClipboardCheck,
       },
       {
         title: "Funcionários",
