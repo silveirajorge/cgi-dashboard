@@ -100,9 +100,11 @@ export async function GET(request: NextRequest) {
       )
       .all(...params) as { date: string; count: number }[];
 
-    // Meses disponíveis
+    // Meses disponíveis (only valid YYYY-MM entries)
     const meses_disponiveis = db
-      .prepare("SELECT DISTINCT mes_competencia FROM pedidos ORDER BY mes_competencia")
+      .prepare(
+        "SELECT DISTINCT mes_competencia FROM pedidos WHERE mes_competencia GLOB '????-??' ORDER BY mes_competencia",
+      )
       .all() as { mes_competencia: string }[];
 
     // Crescimento (D-42 a D-46)

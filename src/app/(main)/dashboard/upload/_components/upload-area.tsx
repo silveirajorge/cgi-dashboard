@@ -7,52 +7,98 @@ import { useRouter } from "next/navigation";
 import { Loader2, Upload } from "lucide-react";
 import { toast } from "sonner";
 
+import { splitCsvIntoChunks } from "@/lib/csv-split";
 import { cn } from "@/lib/utils";
+
+const CHUNK_UPLOAD_LIMIT = 48 * 1024 * 1024;
 
 export function UploadArea() {
   const router = useRouter();
   const [isDragOver, setIsDragOver] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  function handleFile(file: File) {
+  async function handleFile(file: File) {
     if (!file.name.toLowerCase().endsWith(".csv")) {
       toast.error("Apenas arquivos CSV são aceitos");
       return;
     }
 
-    if (file.size > 50 * 1024 * 1024) {
-      toast.error("Arquivo excede o limite de 50MB");
-      return;
-    }
-
     setIsUploading(true);
 
+    try {
+      if (file.size > CHUNK_UPLOAD_LIMIT) {
+        await handleChunkedUpload(file);
+      } else {
+        await handleSingleUpload(file);
+      }
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Erro ao processar upload";
+      toast.error(message);
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(null);
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
+    }
+  }
+
+  async function handleSingleUpload(file: File): Promise<void> {
     const formData = new FormData();
     formData.append("file", file);
 
-    fetch("/api/upload", { method: "POST", body: formData })
-      .then(async (res) => {
-        const data = await res.json();
-        if (!res.ok) {
-          throw new Error(data.error || "Erro ao processar upload");
-        }
-        toast.success(`Upload realizado: ${data.rows_imported} linhas importadas, ${data.rows_ignored} ignoradas`, {
-          action: {
-            label: "Ver Dashboard",
-            onClick: () => router.push("/dashboard/kpi"),
-          },
-        });
-      })
-      .catch((error: Error) => {
-        toast.error(error.message);
-      })
-      .finally(() => {
-        setIsUploading(false);
-        if (inputRef.current) {
-          inputRef.current.value = "";
-        }
-      });
+    const res = await fetch("/api/upload", { method: "POST", body: formData });
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Erro ao processar upload");
+    }
+
+    toast.success(`Upload realizado: ${data.rows_imported} linhas importadas, ${data.rows_ignored} ignoradas`, {
+      action: {
+        label: "Ver Dashboard",
+        onClick: () => router.push("/dashboard/kpi"),
+      },
+    });
+  }
+
+  async function handleChunkedUpload(file: File): Promise<void> {
+    setUploadProgress("Preparando arquivo...");
+
+    const { chunks, totalChunks } = await splitCsvIntoChunks(file);
+
+    let totalImported = 0;
+    let totalIgnored = 0;
+
+    for (let i = 0; i < chunks.length; i++) {
+      const chunk = chunks[i];
+      setUploadProgress(`Enviando parte ${i + 1} de ${totalChunks}...`);
+
+      const formData = new FormData();
+      formData.append("file", chunk.blob, chunk.name);
+
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(`Parte ${i + 1}/${totalChunks} falhou: ${data.error || "Erro ao processar upload"}`);
+      }
+
+      totalImported += data.rows_imported;
+      totalIgnored += data.rows_ignored;
+    }
+
+    toast.success(
+      `Upload concluído: ${totalImported} linhas importadas, ${totalIgnored} ignoradas (${totalChunks} partes)`,
+      {
+        action: {
+          label: "Ver Dashboard",
+          onClick: () => router.push("/dashboard/kpi"),
+        },
+      },
+    );
   }
 
   function handleDragOver(e: DragEvent<HTMLDivElement>) {
@@ -69,7 +115,7 @@ export function UploadArea() {
     e.preventDefault();
     setIsDragOver(false);
     if (e.dataTransfer.files.length > 0) {
-      handleFile(e.dataTransfer.files[0]);
+      void handleFile(e.dataTransfer.files[0]);
     }
   }
 
@@ -81,7 +127,7 @@ export function UploadArea() {
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files && e.target.files.length > 0) {
-      handleFile(e.target.files[0]);
+      void handleFile(e.target.files[0]);
     }
   }
 
@@ -117,11 +163,15 @@ export function UploadArea() {
         )}
 
         <p className="font-medium text-base">
-          {isUploading ? "Enviando..." : isDragOver ? "Solte o arquivo aqui" : "Arraste o arquivo CSV aqui"}
+          {isUploading
+            ? uploadProgress || "Enviando..."
+            : isDragOver
+              ? "Solte o arquivo aqui"
+              : "Arraste o arquivo CSV aqui"}
         </p>
 
         {!isUploading && (
-          <p className="text-muted-foreground text-xs">ou clique para selecionar &middot; CSV até 50MB</p>
+          <p className="text-muted-foreground text-xs">ou clique para selecionar &middot; CSV sem limite de tamanho</p>
         )}
       </div>
     </div>
