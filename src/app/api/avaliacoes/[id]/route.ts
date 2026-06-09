@@ -65,9 +65,15 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       "tipo_auditoria",
     ];
 
-    const sets = campos.map((c) => `${c} = ?`).join(", ");
-    const values = campos.map((c) => body[c] ?? null);
+    const boolFields = new Set(["atraso", "falta", "uso_ferramenta", "erro_critico"]);
+    const values = campos.map((c) => {
+      const v = body[c];
+      if (v === undefined || v === null) return null;
+      if (boolFields.has(c)) return v ? 1 : 0;
+      return v;
+    });
     values.push(avaliacaoId);
+    const sets = campos.map((c) => `${c} = ?`).join(", ");
 
     db.prepare(`UPDATE avaliacoes SET ${sets} WHERE id = ?`).run(...values);
 
