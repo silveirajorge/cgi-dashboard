@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 import { AvaliacaoDetailModal } from "./avaliacao-detail-modal";
@@ -36,7 +37,7 @@ export function AvaliacoesTable({ refreshKey, onNovaAvaliacao, onEditar }: Avali
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [funcionarios, setFuncionarios] = useState<FuncionarioOption[]>([]);
-  const [filtroFuncionarioId, setFiltroFuncionarioId] = useState("");
+  const [filtroFuncionarioId, setFiltroFuncionarioId] = useState("all");
   const [filtroFrom, setFiltroFrom] = useState("");
   const [filtroTo, setFiltroTo] = useState("");
   const [detailModalId, setDetailModalId] = useState<number | null>(null);
@@ -46,7 +47,7 @@ export function AvaliacoesTable({ refreshKey, onNovaAvaliacao, onEditar }: Avali
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      if (filtroFuncionarioId) params.set("funcionario_id", filtroFuncionarioId);
+      if (filtroFuncionarioId && filtroFuncionarioId !== "all") params.set("funcionario_id", filtroFuncionarioId);
       if (filtroFrom) params.set("from", filtroFrom);
       if (filtroTo) params.set("to", filtroTo);
 
@@ -99,22 +100,20 @@ export function AvaliacoesTable({ refreshKey, onNovaAvaliacao, onEditar }: Avali
           <div className="mb-4 flex flex-wrap items-end gap-3">
             {/* Dropdown funcionário */}
             <div className="flex flex-col gap-1">
-              <label htmlFor="filtro-funcionario" className="text-muted-foreground text-xs">
-                Funcionário
-              </label>
-              <select
-                id="filtro-funcionario"
-                value={filtroFuncionarioId}
-                onChange={(e) => setFiltroFuncionarioId(e.target.value)}
-                className="flex h-9 w-[180px] rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs"
-              >
-                <option value="">Todos</option>
-                {funcionarios.map((f) => (
-                  <option key={f.id} value={f.id}>
-                    {f.nome}
-                  </option>
-                ))}
-              </select>
+              <span className="text-muted-foreground text-xs">Funcionário</span>
+              <Select value={filtroFuncionarioId} onValueChange={setFiltroFuncionarioId}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Todos" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos</SelectItem>
+                  {funcionarios.map((f) => (
+                    <SelectItem key={f.id} value={String(f.id)}>
+                      {f.nome}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Date from */}
@@ -146,12 +145,12 @@ export function AvaliacoesTable({ refreshKey, onNovaAvaliacao, onEditar }: Avali
             </div>
 
             {/* Clear filters button (só visível se algum filtro ativo) */}
-            {(filtroFuncionarioId || filtroFrom || filtroTo) && (
+            {(filtroFuncionarioId !== "all" || filtroFrom.length > 0 || filtroTo.length > 0) && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => {
-                  setFiltroFuncionarioId("");
+                  setFiltroFuncionarioId("all");
                   setFiltroFrom("");
                   setFiltroTo("");
                 }}

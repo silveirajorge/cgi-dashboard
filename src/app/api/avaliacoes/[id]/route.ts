@@ -52,7 +52,6 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       "data_avaliacao",
       "pontualidade",
       "qualidade",
-      "produtividade",
       "trabalho_equipa",
       "iniciativa",
       "comunicacao",

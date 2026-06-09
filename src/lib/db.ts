@@ -59,18 +59,35 @@ function runMigrations(database: Database.Database): void {
       data_avaliacao TEXT NOT NULL,
       pontualidade INTEGER NOT NULL CHECK(pontualidade >= 1 AND pontualidade <= 10),
       qualidade INTEGER NOT NULL CHECK(qualidade >= 1 AND qualidade <= 10),
-      produtividade INTEGER NOT NULL CHECK(produtividade >= 1 AND produtividade <= 10),
       trabalho_equipa INTEGER NOT NULL CHECK(trabalho_equipa >= 1 AND trabalho_equipa <= 10),
       iniciativa INTEGER NOT NULL CHECK(iniciativa >= 1 AND iniciativa <= 10),
       comunicacao INTEGER NOT NULL CHECK(comunicacao >= 1 AND comunicacao <= 10),
       media REAL GENERATED ALWAYS AS (
-        (pontualidade + qualidade + produtividade + trabalho_equipa + iniciativa + comunicacao) / 6.0
+        (pontualidade + qualidade + trabalho_equipa + iniciativa + comunicacao) / 5.0
       ) STORED,
       comentario TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (funcionario_id) REFERENCES funcionarios(id)
     )
   `);
+
+  // Migração: remover coluna produtividade (1-10) e recriar media com 5 categorias
+  try {
+    database.exec("ALTER TABLE avaliacoes DROP COLUMN produtividade");
+  } catch {
+    // Coluna já foi removida
+  }
+
+  // Recriar media caso tenha sido dropada junto com produtividade
+  try {
+    database.exec(`
+      ALTER TABLE avaliacoes ADD COLUMN media REAL GENERATED ALWAYS AS (
+        (pontualidade + qualidade + trabalho_equipa + iniciativa + comunicacao) / 5.0
+      ) STORED
+    `);
+  } catch {
+    // Coluna media já existe
+  }
 
   // Migração: adicionar colunas de auditoria à tabela avaliacoes
   const auditoriaColumns = [

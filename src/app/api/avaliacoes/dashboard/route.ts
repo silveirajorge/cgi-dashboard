@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
           f.id, f.nome,
           CAST(AVG(a.perc_produtividade) AS REAL) AS avg_prod,
           CAST(AVG(a.nota_auditoria) AS REAL) AS avg_nota,
-          CAST(AVG((a.pontualidade + a.qualidade + a.produtividade + a.trabalho_equipa + a.iniciativa + a.comunicacao) / 6.0) AS REAL) AS avg_categorias,
+          CAST(AVG((a.pontualidade + a.qualidade + a.trabalho_equipa + a.iniciativa + a.comunicacao) / 5.0) AS REAL) AS avg_categorias,
           SUM(a.atraso) AS total_atrasos,
           SUM(a.falta) AS total_faltas,
           SUM(a.erro_critico) AS total_erros,

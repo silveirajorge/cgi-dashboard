@@ -44,7 +44,6 @@ export async function GET(request: NextRequest) {
         `SELECT
           AVG(a.pontualidade) as pontualidade,
           AVG(a.qualidade) as qualidade,
-          AVG(a.produtividade) as produtividade,
           AVG(a.trabalho_equipa) as trabalho_equipa,
           AVG(a.iniciativa) as iniciativa,
           AVG(a.comunicacao) as comunicacao

@@ -67,12 +67,15 @@ export function AvaliacaoForm({ editId, onCancel, onSuccess }: AvaliacaoFormProp
         if (res.ok) {
           const data: FuncionarioOption[] = await res.json();
           setFuncionarios(data);
+          if (data.length > 0 && !editId) {
+            setFuncionario(data[0]);
+          }
         }
       } catch {
         // non-critical
       }
     })();
-  }, []);
+  }, [editId]);
 
   // Load existing data when editing
   useEffect(() => {
@@ -190,7 +193,7 @@ export function AvaliacaoForm({ editId, onCancel, onSuccess }: AvaliacaoFormProp
               Funcionário <span className="text-destructive">*</span>
             </Label>
             <Select
-              value={funcionario ? String(funcionario.id) : "placeholder"}
+              value={funcionario ? String(funcionario.id) : ""}
               onValueChange={(v) => {
                 const found = funcionarios.find((f) => String(f.id) === v);
                 setFuncionario(found ?? null);

@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     const rows = db
       .prepare(
         `SELECT a.id, a.data_avaliacao,
-                a.pontualidade, a.qualidade, a.produtividade,
+                a.pontualidade, a.qualidade,
                 a.trabalho_equipa, a.iniciativa, a.comunicacao,
                 a.media, a.comentario,
                 a.atraso, a.falta, a.uso_ferramenta, a.erro_critico,
@@ -60,7 +60,6 @@ export async function POST(request: NextRequest) {
       data_avaliacao,
       pontualidade,
       qualidade,
-      produtividade,
       trabalho_equipa,
       iniciativa,
       comunicacao,
@@ -81,7 +80,6 @@ export async function POST(request: NextRequest) {
     const categorias = [
       ["pontualidade", pontualidade],
       ["qualidade", qualidade],
-      ["produtividade", produtividade],
       ["trabalho_equipa", trabalho_equipa],
       ["iniciativa", iniciativa],
       ["comunicacao", comunicacao],
@@ -114,10 +112,10 @@ export async function POST(request: NextRequest) {
       .prepare(
         `INSERT INTO avaliacoes
          (funcionario_id, data_avaliacao, pontualidade, qualidade,
-          produtividade, trabalho_equipa, iniciativa, comunicacao, comentario,
+          trabalho_equipa, iniciativa, comunicacao, comentario,
           atraso, falta, uso_ferramenta, erro_critico, perc_produtividade,
           nota_auditoria, tipo_auditoria)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?,
                  ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
@@ -125,7 +123,6 @@ export async function POST(request: NextRequest) {
         data_avaliacao,
         pontualidade,
         qualidade,
-        produtividade,
         trabalho_equipa,
         iniciativa,
         comunicacao,

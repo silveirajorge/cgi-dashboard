@@ -26,7 +26,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const rows = db
       .prepare(
         `SELECT
-          a.id, a.data_avaliacao, a.pontualidade, a.qualidade, a.produtividade,
+          a.id, a.data_avaliacao, a.pontualidade, a.qualidade,
           a.trabalho_equipa, a.iniciativa, a.comunicacao, a.media, a.comentario,
           a.atraso, a.falta, a.uso_ferramenta, a.erro_critico,
           a.perc_produtividade, a.nota_auditoria, a.tipo_auditoria

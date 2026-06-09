@@ -13,7 +13,6 @@ interface AvaliacaoDetalhada {
   data_avaliacao: string;
   pontualidade: number;
   qualidade: number;
-  produtividade: number;
   trabalho_equipa: number;
   iniciativa: number;
   comunicacao: number;
@@ -31,7 +30,6 @@ interface AvaliacaoDetailModalProps {
 const CATEGORIAS: { key: keyof AvaliacaoDetalhada; label: string }[] = [
   { key: "pontualidade", label: "Pontualidade" },
   { key: "qualidade", label: "Qualidade" },
-  { key: "produtividade", label: "Produtividade" },
   { key: "trabalho_equipa", label: "Trabalho em Equipa" },
   { key: "iniciativa", label: "Iniciativa" },
   { key: "comunicacao", label: "Comunicação" },
